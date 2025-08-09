@@ -70,34 +70,34 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 lg:py-20">
+      <section className="bg-gradient-to-b from-gray-50 to-white py-8 sm:py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-4xl mx-auto">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#002349] mb-4 sm:mb-6 leading-tight px-2">
+          <div className="text-center max-w-5xl mx-auto">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-[#002349] mb-3 sm:mb-4 leading-tight px-2 tracking-tight">
               Business Finance Made <span className="text-[#22c55e]">Aasan</span>
             </h1>
-            <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
+            <p className="text-xl sm:text-2xl lg:text-3xl text-gray-600 mb-8 sm:mb-10 leading-relaxed px-4 font-medium">
               AI-powered automation that transforms paperwork into business insights
             </p>
             
             {/* Interactive Invoice Upload Interface */}
-            <div className="mb-8 px-4">
+            <div className="mb-10 sm:mb-12 px-4">
               <div className="max-w-2xl mx-auto">
                 <div 
-                  className="bg-white rounded-lg shadow-lg border-2 border-dashed border-gray-200 hover:border-blue-500 hover:scale-105 transition-all duration-200 cursor-pointer group"
+                  className="bg-white rounded-xl shadow-xl border-2 border-dashed border-gray-200 hover:border-[#f97316] hover:scale-105 transition-all duration-300 cursor-pointer group"
                   onDragOver={handleDragOver}
                   onDrop={handleDrop}
                   onClick={() => document.getElementById('file-upload')?.click()}
                 >
-                  <div className="px-6 py-10 sm:px-10 sm:py-12 text-center">
-                    <div className="mb-4">
-                     <Upload className="w-12 h-12 text-orange-500 group-hover:text-orange-600 mx-auto transition-colors" />
+                  <div className="px-8 py-12 sm:px-12 sm:py-16 text-center">
+                    <div className="mb-6">
+                     <Upload className="w-16 h-16 text-[#f97316] group-hover:text-[#ea580c] mx-auto transition-colors" />
                     </div>
-                    <p className="text-lg font-medium text-gray-700 mb-2">
+                    <p className="text-xl font-semibold text-gray-800 mb-3">
                       Drop your invoice here or click to browse
                     </p>
-                   <p className="text-sm text-gray-500">
-                     Supports PDF, JPG, PNG • <span className="text-orange-500 font-medium">See instant AI processing</span>
+                   <p className="text-base text-gray-600">
+                     Supports PDF, JPG, PNG • <span className="text-[#f97316] font-semibold">See instant AI processing</span>
                     </p>
                   </div>
                   <input
@@ -111,33 +111,33 @@ function App() {
               </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-gray-600 px-4 mt-8">
-              <Users className="w-5 h-5 text-orange-500" />
-              <span className="font-medium text-sm sm:text-base text-center">Trusted by 500+ Indian businesses</span>
+            <div className="flex items-center justify-center gap-3 text-gray-700 px-4 mb-12 sm:mb-16">
+              <Users className="w-6 h-6 text-[#f97316]" />
+              <span className="font-semibold text-base sm:text-lg text-center">Trusted by 500+ Indian businesses</span>
             </div>
 
             {/* Trust Indicators */}
-            <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center px-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 text-center px-4">
               <div className="flex flex-col items-center">
-                <div className="bg-orange-50 p-3 sm:p-4 rounded-full mb-3">
-                  <Clock className="w-6 h-6 text-orange-500" />
+                <div className="bg-orange-50 p-4 sm:p-5 rounded-full mb-4">
+                  <Clock className="w-7 h-7 text-[#f97316]" />
                 </div>
-                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Save 20+ Hours Monthly</h3>
-                <p className="text-gray-600 text-sm">Automated expense processing</p>
+                <h3 className="font-bold text-[#002349] mb-2 text-base sm:text-lg">Save 20+ Hours Monthly</h3>
+                <p className="text-gray-600 text-sm sm:text-base">Automated expense processing</p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-orange-50 p-3 sm:p-4 rounded-full mb-3">
-                  <TrendingUp className="w-6 h-6 text-orange-500" />
+                <div className="bg-orange-50 p-4 sm:p-5 rounded-full mb-4">
+                  <TrendingUp className="w-7 h-7 text-[#f97316]" />
                 </div>
-                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Get Clear Spending Insights</h3>
-                <p className="text-gray-600 text-sm">Visual dashboards & analytics</p>
+                <h3 className="font-bold text-[#002349] mb-2 text-base sm:text-lg">Get Clear Spending Insights</h3>
+                <p className="text-gray-600 text-sm sm:text-base">Visual dashboards & analytics</p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-orange-50 p-3 sm:p-4 rounded-full mb-3">
-                  <BarChart3 className="w-6 h-6 text-orange-500" />
+                <div className="bg-orange-50 p-4 sm:p-5 rounded-full mb-4">
+                  <BarChart3 className="w-7 h-7 text-[#f97316]" />
                 </div>
-                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Make Data-Driven Decisions</h3>
-                <p className="text-gray-600 text-sm">Actionable business intelligence</p>
+                <h3 className="font-bold text-[#002349] mb-2 text-base sm:text-lg">Make Data-Driven Decisions</h3>
+                <p className="text-gray-600 text-sm sm:text-base">Actionable business intelligence</p>
               </div>
             </div>
           </div>
