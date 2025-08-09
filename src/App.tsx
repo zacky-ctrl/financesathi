@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, IndianRupee } from 'lucide-react';
+import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target } from 'lucide-react';
 
 function App() {
   const testimonials = [
@@ -10,19 +10,24 @@ function App() {
 
   const features = [
     {
-      icon: <Zap className="w-8 h-8 text-green-500" />,
-      title: "Expense Management",
-      description: "AI automatically extracts data from invoices, receipts, and bills for Indian business needs. No manual typing needed."
+      icon: <Upload className="w-8 h-8 text-green-500" />,
+      title: "Smart Invoice Processing",
+      description: "AI automatically extracts data from invoices, receipts, and bills. Simply upload and let our technology handle the rest."
+    },
+    {
+      icon: <Target className="w-8 h-8 text-green-500" />,
+      title: "Automatic Expense Categorization",
+      description: "Intelligent categorization of all your business expenses with customizable categories for better organization."
+    },
+    {
+      icon: <BarChart3 className="w-8 h-8 text-green-500" />,
+      title: "Real-time Business Dashboards",
+      description: "Visual dashboards that give you instant insights into your spending patterns and business financial health."
     },
     {
       icon: <FileText className="w-8 h-8 text-green-500" />,
-      title: "GST-Ready Reports",
-      description: "Generate GST reports, expense summaries, and financial insights tailored for Indian businesses in seconds."
-    },
-    {
-      icon: <Shield className="w-8 h-8 text-green-500" />,
-      title: "Tally & QuickBooks Export",
-      description: "Seamlessly export to Tally and QuickBooks with bank-grade encryption for Indian business compliance."
+      title: "Instant Summary Reports",
+      description: "Generate comprehensive expense reports and financial summaries in seconds, not hours of manual work."
     }
   ];
 
@@ -48,15 +53,15 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#002349] mb-4 sm:mb-6 leading-tight px-2">
-              Business Finance Made <span className="text-green-600">Aasan</span>
+              Tired of Managing Invoices, Receipts & Business Expenses <span className="text-green-600">Manually?</span>
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
-              Complete financial management for Indian small businesses
+              AI-powered automation that transforms paperwork into business insights
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
               <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-4 rounded-lg font-semibold text-base sm:text-lg flex items-center justify-center gap-2 transition-colors shadow-lg min-h-[44px] w-full sm:w-auto max-w-sm">
-                Shuru Karo - Start Free Trial
+                Start Free Trial
                 <ArrowRight className="w-5 h-5" />
               </button>
               <p className="text-gray-500 text-sm text-center">No credit card required</p>
@@ -64,7 +69,7 @@ function App() {
 
             <div className="flex items-center justify-center gap-2 text-gray-600 px-4">
               <Users className="w-5 h-5 text-green-500" />
-              <span className="font-medium text-sm sm:text-base text-center">Trusted by 500+ Indian businesses served</span>
+              <span className="font-medium text-sm sm:text-base text-center">Trusted by 500+ Indian businesses</span>
             </div>
 
             {/* Trust Indicators */}
@@ -73,22 +78,22 @@ function App() {
                 <div className="bg-green-100 p-3 sm:p-4 rounded-full mb-3">
                   <Clock className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">20+ Hours Saved</h3>
-                <p className="text-gray-600 text-sm">Every month per business</p>
+                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Save 20+ Hours Monthly</h3>
+                <p className="text-gray-600 text-sm">Automated expense processing</p>
               </div>
               <div className="flex flex-col items-center">
                 <div className="bg-green-100 p-3 sm:p-4 rounded-full mb-3">
                   <TrendingUp className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">99.8% Accuracy</h3>
-                <p className="text-gray-600 text-sm">AI-powered data extraction</p>
+                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Get Clear Spending Insights</h3>
+                <p className="text-gray-600 text-sm">Visual dashboards & analytics</p>
               </div>
               <div className="flex flex-col items-center">
                 <div className="bg-green-100 p-3 sm:p-4 rounded-full mb-3">
-                  <Shield className="w-6 h-6 text-green-600" />
+                  <BarChart3 className="w-6 h-6 text-green-600" />
                 </div>
-                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">100% Secure</h3>
-                <p className="text-gray-600 text-sm">Bank-grade encryption</p>
+                <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Make Data-Driven Decisions</h3>
+                <p className="text-gray-600 text-sm">Actionable business intelligence</p>
               </div>
             </div>
           </div>
@@ -100,34 +105,41 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002349] mb-4 px-4">
-              Simple 3-Step Process
+              Simple 4-Step Workflow
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 px-4">
-              From invoice to insights in minutes, not hours
+              Upload → Categorize → Analyze → Report
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <div className="text-center">
               <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 1
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Upload Invoice</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">Simply take a photo or upload your invoice, receipt, or bill in ₹</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Upload</h3>
+              <p className="text-gray-600 text-sm sm:text-base px-4">Take a photo or upload your invoices, receipts, and bills</p>
             </div>
             <div className="text-center">
               <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 2
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">AI Processes</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">Our AI automatically extracts all data with 99.8% accuracy for Indian businesses</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Categorize</h3>
+              <p className="text-gray-600 text-sm sm:text-base px-4">AI automatically categorizes and organizes your expenses</p>
             </div>
             <div className="text-center">
               <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 3
               </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Get Reports</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">Instantly generate GST reports, expense summaries with ₹ calculations, and more</p>
+              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Analyze</h3>
+              <p className="text-gray-600 text-sm sm:text-base px-4">Get insights into spending patterns and business trends</p>
+            </div>
+            <div className="text-center">
+              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
+                4
+              </div>
+              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Report</h3>
+              <p className="text-gray-600 text-sm sm:text-base px-4">Generate comprehensive reports and summaries instantly</p>
             </div>
           </div>
         </div>
@@ -145,43 +157,45 @@ function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 max-w-5xl mx-auto">
-            <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg border-2 border-orange-500">
-              <div className="text-center">
-                <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Base</h3>
-                <div className="text-3xl sm:text-4xl font-bold text-orange-500 mb-4">
-                  ₹199<span className="text-lg text-gray-500">/month</span>
+          <div className="max-w-5xl mx-auto">
+            <div className="grid grid-cols-1 gap-6 sm:gap-8 md:grid-cols-3">
+              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg border-2 border-orange-500 order-1">
+                <div className="text-center">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Base</h3>
+                  <div className="text-3xl sm:text-4xl font-bold text-orange-500 mb-4">
+                    ₹199<span className="text-lg text-gray-500">/month</span>
+                  </div>
+                  <p className="text-gray-600 mb-6">Perfect for small businesses getting started</p>
+                  <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold w-full transition-colors min-h-[44px]">
+                    Start Free Trial
+                  </button>
                 </div>
-                <p className="text-gray-600 mb-6">Perfect for small businesses getting started</p>
-                <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold w-full transition-colors">
-                  Start Free Trial
-                </button>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75">
-              <div className="text-center">
-                <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Smart</h3>
-                <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
-                  ₹599<span className="text-lg text-gray-400">/month</span>
+              
+              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75 order-2">
+                <div className="text-center">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Smart</h3>
+                  <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
+                    ₹599<span className="text-lg text-gray-400">/month</span>
+                  </div>
+                  <p className="text-gray-600 mb-6">Advanced features for growing businesses</p>
+                  <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed min-h-[44px]">
+                    Coming Soon
+                  </button>
                 </div>
-                <p className="text-gray-600 mb-6">Advanced features for growing businesses</p>
-                <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed">
-                  Coming Soon
-                </button>
               </div>
-            </div>
-            
-            <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75">
-              <div className="text-center">
-                <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Saathi</h3>
-                <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
-                  ₹1299<span className="text-lg text-gray-400">/month</span>
+              
+              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75 order-3">
+                <div className="text-center">
+                  <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Saathi</h3>
+                  <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
+                    ₹1299<span className="text-lg text-gray-400">/month</span>
+                  </div>
+                  <p className="text-gray-600 mb-6">Complete solution for established businesses</p>
+                  <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed min-h-[44px]">
+                    Coming Soon
+                  </button>
                 </div>
-                <p className="text-gray-600 mb-6">Complete solution for established businesses</p>
-                <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed">
-                  Coming Soon
-                </button>
               </div>
             </div>
           </div>
@@ -193,16 +207,16 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002349] mb-4 px-4">
-              Everything Your Indian Business Needs
+              Everything Your Business Needs
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Powerful features designed specifically for Indian small businesses
+              Powerful features designed to streamline your financial workflow
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
             {features.map((feature, index) => (
-              <div key={index} className="bg-gray-50 rounded-xl p-6 sm:p-8 hover:shadow-lg transition-shadow">
+              <div key={index} className="bg-white rounded-xl p-6 sm:p-8 hover:shadow-lg transition-shadow">
                 <div className="mb-4 sm:mb-6">
                   {feature.icon}
                 </div>
@@ -239,7 +253,7 @@ function App() {
                   ))}
                 </div>
                 <p className="text-gray-600 mb-4 sm:mb-6 italic text-sm sm:text-base">
-                  "FinanceSaathi has completely transformed how we handle our accounting. What used to take hours now takes minutes!"
+                  "FinanceSaathi has completely transformed how we handle our expense management. What used to take hours now takes minutes!"
                 </p>
                 <div>
                   <p className="font-semibold text-[#002349] text-sm sm:text-base">{testimonial.name}</p>
@@ -255,14 +269,14 @@ function App() {
       <section className="py-12 sm:py-16 lg:py-20 bg-[#002349]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-4 sm:mb-6 px-4">
-            Ready to Save ₹20,000+ Every Month?
+            Ready to Save 20+ Hours Every Month?
           </h2>
           <p className="text-lg sm:text-xl text-gray-300 mb-6 sm:mb-8 max-w-2xl mx-auto px-4">
-            Join 500+ Indian businesses already using FinanceSaathi to automate their financial management
+            Join 500+ Indian businesses already using FinanceSaathi to automate their expense management
           </p>
           
           <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-4 rounded-lg font-semibold text-base sm:text-lg flex items-center justify-center gap-2 mx-auto transition-colors shadow-lg min-h-[44px] w-full sm:w-auto max-w-sm mb-6 sm:mb-8">
-            Shuru Karo - Start Free Trial
+            Start Free Trial
             <ArrowRight className="w-5 h-5" />
           </button>
           
@@ -293,7 +307,7 @@ function App() {
                 <span className="ml-2 text-xl font-bold">FinanceSaathi</span>
               </div>
               <p className="text-gray-400 max-w-md text-sm sm:text-base">
-                Making business finance simple and automated for Indian small businesses.
+                Making business expense management simple and automated for Indian small businesses.
               </p>
             </div>
             <div>
