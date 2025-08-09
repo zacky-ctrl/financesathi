@@ -2,6 +2,27 @@ import React from 'react';
 import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target } from 'lucide-react';
 
 function App() {
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      console.log('File uploaded:', files[0].name);
+      // Handle file upload logic here
+    }
+  };
+
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+
+  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    if (files && files.length > 0) {
+      console.log('File dropped:', files[0].name);
+      // Handle file drop logic here
+    }
+  };
+
   const testimonials = [
     { name: "Rajesh Sharma", business: "Sharma Electronics, Delhi", rating: 5 },
     { name: "Priya Patel", business: "Patel Trading Co., Mumbai", rating: 5 },
@@ -59,15 +80,38 @@ function App() {
               AI-powered automation that transforms paperwork into business insights
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8 sm:mb-12 px-4">
-              <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 sm:px-8 py-4 rounded-lg font-semibold text-base sm:text-lg flex items-center justify-center gap-2 transition-colors shadow-lg min-h-[44px] w-full sm:w-auto max-w-sm">
-                Start Free Trial
-                <ArrowRight className="w-5 h-5" />
-              </button>
-              <p className="text-gray-500 text-sm text-center">No credit card required</p>
+            {/* Interactive Invoice Upload Interface */}
+            <div className="mb-8 px-4">
+              <div className="max-w-2xl mx-auto">
+                <div 
+                  className="bg-white rounded-lg shadow-lg border-2 border-dashed border-gray-200 hover:border-blue-500 hover:scale-105 transition-all duration-200 cursor-pointer group"
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  onClick={() => document.getElementById('file-upload')?.click()}
+                >
+                  <div className="px-6 py-10 sm:px-10 sm:py-12 text-center">
+                    <div className="mb-4">
+                      <Upload className="w-12 h-12 text-gray-400 group-hover:text-blue-500 mx-auto transition-colors" />
+                    </div>
+                    <p className="text-lg font-medium text-gray-700 mb-2">
+                      Drop your invoice here or click to browse
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Supports PDF, JPG, PNG • See instant AI processing
+                    </p>
+                  </div>
+                  <input
+                    id="file-upload"
+                    type="file"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                </div>
+              </div>
             </div>
 
-            <div className="flex items-center justify-center gap-2 text-gray-600 px-4">
+            <div className="flex items-center justify-center gap-2 text-gray-600 px-4 mt-8">
               <Users className="w-5 h-5 text-green-500" />
               <span className="font-medium text-sm sm:text-base text-center">Trusted by 500+ Indian businesses</span>
             </div>
