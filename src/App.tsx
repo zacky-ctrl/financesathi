@@ -750,7 +750,6 @@ function App() {
   }
 
   return (
-    <>
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b border-gray-100">
@@ -1206,7 +1205,6 @@ function App() {
         </div>
       </footer>
     </div>
-    </>
   );
 }
 
