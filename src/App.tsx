@@ -76,7 +76,7 @@ function App() {
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-gray-50 to-white py-6 sm:py-8 lg:py-10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-5xl mx-auto">
+          <div className="text-center max-w-6xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-[#002349] mb-2 sm:mb-3 leading-tight px-2 tracking-tight">
               Business Finance Made <span className="text-[#22c55e]">Aasan</span>
             </h1>
@@ -84,6 +84,22 @@ function App() {
               AI-powered automation that transforms paperwork into business insights
             </p>
             
+            {/* Key Benefits Bar */}
+            <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 mb-6 sm:mb-7 px-4">
+              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                <div className="w-2 h-2 bg-[#22c55e] rounded-full"></div>
+                <span className="text-sm font-medium text-gray-700">Save 20+ Hours Weekly</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                <div className="w-2 h-2 bg-[#f97316] rounded-full"></div>
+                <span className="text-sm font-medium text-gray-700">99% Accuracy</span>
+              </div>
+              <div className="flex items-center gap-2 bg-white/80 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm">
+                <div className="w-2 h-2 bg-[#002349] rounded-full"></div>
+                <span className="text-sm font-medium text-gray-700">Instant Reports</span>
+              </div>
+            </div>
+
             {/* Interactive Invoice Upload Interface */}
             <div className="mb-6 sm:mb-7 px-4">
               <div className="max-w-2xl mx-auto">
@@ -115,6 +131,38 @@ function App() {
               </div>
             </div>
 
+            {/* Social Proof and CTA Row */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
+              <div className="flex items-center gap-2 text-gray-600">
+                <div className="flex -space-x-2">
+                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-2 border-white"></div>
+                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full border-2 border-white"></div>
+                  <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full border-2 border-white"></div>
+                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full border-2 border-white"></div>
+                </div>
+                <span className="text-sm font-medium">500+ businesses trust us</span>
+              </div>
+              <button className="bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg flex items-center gap-2">
+                Start Free Trial
+                <ArrowRight className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Trust Indicators */}
+            <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-gray-500">
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-[#22c55e]" />
+                <span>14-day free trial</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <Shield className="w-4 h-4 text-[#22c55e]" />
+                <span>Bank-grade security</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <CheckCircle className="w-4 h-4 text-[#22c55e]" />
+                <span>No setup fees</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
