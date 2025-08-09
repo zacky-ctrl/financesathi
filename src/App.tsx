@@ -736,6 +736,27 @@ function App() {
           </div>
         </div>
       </div>
+      
+      {/* New user guidance */}
+      <p className="text-sm text-gray-600 mt-3 text-center">
+        New user? Upload your first invoice above
+      </p>
+      
+      {/* Divider */}
+      <div className="flex items-center my-6">
+        <div className="flex-1 border-t border-gray-300"></div>
+        <span className="px-4 text-sm text-gray-500 bg-white">or</span>
+        <div className="flex-1 border-t border-gray-300"></div>
+      </div>
+      
+      {/* Dashboard access button */}
+      <button
+        onClick={() => setCurrentView('dashboard')}
+        className="w-full bg-orange-500 hover:bg-orange-600 text-white font-semibold py-4 px-6 rounded-xl transition-colors duration-200 flex items-center justify-center gap-2"
+      >
+        <BarChart3 className="w-5 h-5" />
+        Returning user? View Dashboard
+      </button>
     );
   }
 
