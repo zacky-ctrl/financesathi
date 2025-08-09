@@ -1,26 +1,188 @@
 import React from 'react';
-import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target } from 'lucide-react';
+import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target, X, Check } from 'lucide-react';
+
+interface UploadedFile {
+  id: string;
+  filename: string;
+  filesize: number;
+  uploadDate: string;
+  processed: boolean;
+  fileData?: string;
+}
+
+interface UploadState {
+  isDragging: boolean;
+  isUploading: boolean;
+  uploadProgress: number;
+  uploadedFile: UploadedFile | null;
+  isProcessing: boolean;
+  isComplete: boolean;
+  error: string | null;
+}
 
 function App() {
+  const [uploadState, setUploadState] = React.useState<UploadState>({
+    isDragging: false,
+    isUploading: false,
+    uploadProgress: 0,
+    uploadedFile: null,
+    isProcessing: false,
+    isComplete: false,
+    error: null
+  });
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const validateFile = (file: File): string | null => {
+    const maxSize = 5 * 1024 * 1024; // 5MB
+    const allowedTypes = ['application/pdf', 'image/jpeg', 'image/jpg', 'image/png'];
+    
+    if (!allowedTypes.includes(file.type)) {
+      return 'Please upload a PDF, JPG, or PNG file';
+    }
+    
+    if (file.size > maxSize) {
+      return 'File size must be less than 5MB';
+    }
+    
+    return null;
+  };
+
+  const processFile = async (file: File): Promise<void> => {
+    const validationError = validateFile(file);
+    if (validationError) {
+      setUploadState(prev => ({ ...prev, error: validationError }));
+      return;
+    }
+
+    setUploadState(prev => ({ 
+      ...prev, 
+      isUploading: true, 
+      uploadProgress: 0, 
+      error: null 
+    }));
+
+    // Simulate upload progress
+    const progressInterval = setInterval(() => {
+      setUploadState(prev => {
+        if (prev.uploadProgress >= 100) {
+          clearInterval(progressInterval);
+          return prev;
+        }
+        return { ...prev, uploadProgress: prev.uploadProgress + 10 };
+      });
+    }, 100);
+
+    try {
+      // Convert file to base64
+      const reader = new FileReader();
+      const fileData = await new Promise<string>((resolve, reject) => {
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+
+      // Wait for upload progress to complete
+      await new Promise(resolve => setTimeout(resolve, 1200));
+
+      const uploadedFile: UploadedFile = {
+        id: `upload_${Date.now()}`,
+        filename: file.name,
+        filesize: file.size,
+        uploadDate: new Date().toISOString(),
+        processed: false,
+        fileData
+      };
+
+      // Store in localStorage
+      const existingUploads = JSON.parse(localStorage.getItem('financeUploads') || '[]');
+      existingUploads.push(uploadedFile);
+      localStorage.setItem('financeUploads', JSON.stringify(existingUploads));
+
+      setUploadState(prev => ({
+        ...prev,
+        isUploading: false,
+        uploadProgress: 100,
+        uploadedFile,
+        isProcessing: true
+      }));
+
+      // Processing animation for 3 seconds
+      setTimeout(() => {
+        const processedFile = { ...uploadedFile, processed: true };
+        
+        // Update localStorage with processed status
+        const uploads = JSON.parse(localStorage.getItem('financeUploads') || '[]');
+        const updatedUploads = uploads.map((upload: UploadedFile) => 
+          upload.id === uploadedFile.id ? processedFile : upload
+        );
+        localStorage.setItem('financeUploads', JSON.stringify(updatedUploads));
+
+        setUploadState(prev => ({
+          ...prev,
+          isProcessing: false,
+          isComplete: true,
+          uploadedFile: processedFile
+        }));
+      }, 3000);
+
+    } catch (error) {
+      clearInterval(progressInterval);
+      setUploadState(prev => ({
+        ...prev,
+        isUploading: false,
+        error: 'Failed to upload file. Please try again.'
+      }));
+    }
+  };
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
     if (files && files.length > 0) {
-      console.log('File uploaded:', files[0].name);
-      // Handle file upload logic here
+      processFile(files[0]);
     }
   };
 
   const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    setUploadState(prev => ({ ...prev, isDragging: true }));
+  };
+
+  const handleDragLeave = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    setUploadState(prev => ({ ...prev, isDragging: false }));
   };
 
   const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
+    setUploadState(prev => ({ ...prev, isDragging: false }));
     const files = event.dataTransfer.files;
     if (files && files.length > 0) {
-      console.log('File dropped:', files[0].name);
-      // Handle file drop logic here
+      processFile(files[0]);
     }
+  };
+
+  const resetUpload = () => {
+    setUploadState({
+      isDragging: false,
+      isUploading: false,
+      uploadProgress: 0,
+      uploadedFile: null,
+      isProcessing: false,
+      isComplete: false,
+      error: null
+    });
+  };
+
+  const viewDashboard = () => {
+    // This would navigate to dashboard in a real app
+    alert('Dashboard feature coming soon! Your file has been processed and saved.');
   };
 
   const testimonials = [
@@ -106,27 +268,114 @@ function App() {
             <div className="mb-6 sm:mb-7 px-4">
               <div className="max-w-2xl mx-auto">
                 <div 
-                  className="bg-white rounded-xl shadow-xl border-2 border-dashed border-gray-200 hover:border-[#f97316] hover:scale-105 transition-all duration-300 cursor-pointer group"
+                  className={`bg-white rounded-xl shadow-xl border-2 border-dashed transition-all duration-300 cursor-pointer group ${
+                    uploadState.isDragging 
+                      ? 'border-[#f97316] scale-105' 
+                      : uploadState.error 
+                        ? 'border-red-400' 
+                        : uploadState.isComplete 
+                          ? 'border-green-400' 
+                          : 'border-gray-200 hover:border-[#f97316] hover:scale-105'
+                  }`}
                   onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
                   onDrop={handleDrop}
-                  onClick={() => document.getElementById('file-upload')?.click()}
+                  onClick={() => !uploadState.isUploading && !uploadState.isProcessing && document.getElementById('file-upload')?.click()}
                 >
                   <div className="px-6 py-8 sm:px-8 sm:py-10 text-center">
-                    <div className="mb-6">
-                     <Upload className="w-16 h-16 text-[#f97316] group-hover:text-[#ea580c] mx-auto transition-colors" />
-                    </div>
-                    <p className="text-xl font-semibold text-gray-800 mb-3">
-                      Drop your invoice here or click to browse
-                    </p>
-                   <p className="text-base text-gray-600">
-                     Supports PDF, JPG, PNG • <span className="text-[#f97316] font-semibold">See instant AI processing</span>
-                    </p>
+                    {uploadState.error ? (
+                      <>
+                        <div className="mb-6">
+                          <X className="w-16 h-16 text-red-500 mx-auto" />
+                        </div>
+                        <p className="text-xl font-semibold text-red-600 mb-3">
+                          {uploadState.error}
+                        </p>
+                        <button 
+                          onClick={(e) => { e.stopPropagation(); resetUpload(); }}
+                          className="text-[#f97316] font-semibold hover:text-[#ea580c] transition-colors"
+                        >
+                          Try again
+                        </button>
+                      </>
+                    ) : uploadState.isComplete ? (
+                      <>
+                        <div className="mb-6">
+                          <Check className="w-16 h-16 text-green-500 mx-auto" />
+                        </div>
+                        <p className="text-xl font-semibold text-green-600 mb-3">
+                          Processing Complete!
+                        </p>
+                        <p className="text-base text-gray-600 mb-4">
+                          {uploadState.uploadedFile?.filename} ({formatFileSize(uploadState.uploadedFile?.filesize || 0)})
+                        </p>
+                        <div className="space-y-3">
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); viewDashboard(); }}
+                            className="bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+                          >
+                            View Dashboard
+                          </button>
+                          <button 
+                            onClick={(e) => { e.stopPropagation(); resetUpload(); }}
+                            className="block mx-auto text-gray-500 hover:text-gray-700 transition-colors text-sm"
+                          >
+                            Upload another file
+                          </button>
+                        </div>
+                      </>
+                    ) : uploadState.isProcessing ? (
+                      <>
+                        <div className="mb-6">
+                          <div className="w-16 h-16 mx-auto">
+                            <div className="animate-spin rounded-full h-16 w-16 border-4 border-[#f97316] border-t-transparent"></div>
+                          </div>
+                        </div>
+                        <p className="text-xl font-semibold text-[#f97316] mb-3">
+                          Processing with AI...
+                        </p>
+                        <p className="text-base text-gray-600">
+                          Extracting data from {uploadState.uploadedFile?.filename}
+                        </p>
+                      </>
+                    ) : uploadState.isUploading ? (
+                      <>
+                        <div className="mb-6">
+                          <Upload className="w-16 h-16 text-[#f97316] mx-auto" />
+                        </div>
+                        <p className="text-xl font-semibold text-gray-800 mb-3">
+                          Uploading...
+                        </p>
+                        <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
+                          <div 
+                            className="bg-[#f97316] h-3 rounded-full transition-all duration-300"
+                            style={{ width: `${uploadState.uploadProgress}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-base text-gray-600">
+                          {uploadState.uploadProgress}% complete
+                        </p>
+                      </>
+                    ) : (
+                      <>
+                        <div className="mb-6">
+                          <Upload className="w-16 h-16 text-[#f97316] group-hover:text-[#ea580c] mx-auto transition-colors" />
+                        </div>
+                        <p className="text-xl font-semibold text-gray-800 mb-3">
+                          Drop your invoice here or click to browse
+                        </p>
+                        <p className="text-base text-gray-600">
+                          Supports PDF, JPG, PNG • <span className="text-[#f97316] font-semibold">See instant AI processing</span>
+                        </p>
+                      </>
+                    )}
                   </div>
                   <input
                     id="file-upload"
                     type="file"
                     accept=".pdf,.jpg,.jpeg,.png"
                     onChange={handleFileUpload}
+                    disabled={uploadState.isUploading || uploadState.isProcessing}
                     className="hidden"
                   />
                 </div>
