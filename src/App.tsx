@@ -264,50 +264,6 @@ function App() {
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002349] mb-4 px-4">
-              Simple 4-Step Workflow
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 px-4">
-              Upload → Categorize → Analyze → Report
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
-            <div className="text-center">
-              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
-                1
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Upload</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">Take a photo or upload your invoices, receipts, and bills</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
-                2
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Categorize</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">AI automatically categorizes and organizes your expenses</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
-                3
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Analyze</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">Get insights into spending patterns and business trends</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
-                4
-              </div>
-              <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Report</h3>
-              <p className="text-gray-600 text-sm sm:text-base px-4">Generate comprehensive reports and summaries instantly</p>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Pricing Section */}
       <section className="py-12 sm:py-16 lg:py-20 bg-white">
