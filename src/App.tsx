@@ -1,5 +1,6 @@
 import React from 'react';
 import Tesseract from 'tesseract.js';
+import OpenAI from 'openai';
 import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target, X, Check, Home, Plus, Download, Calendar, DollarSign, Package, Search, Filter, Eye, CreditCard, Receipt, Activity } from 'lucide-react';
 
 interface UploadedFile {
@@ -45,6 +46,12 @@ interface ExpenseSummary {
   averageTransaction: number;
   topCategory: string;
 }
+
+// OpenAI Configuration
+const openai = new OpenAI({
+  apiKey: 'your-openai-api-key-here', // Replace with actual API key
+  dangerouslyAllowBrowser: true // Note: In production, use a backend proxy
+});
 
 function App() {
   const [currentView, setCurrentView] = React.useState<'home' | 'dashboard'>('home');
@@ -177,6 +184,72 @@ function App() {
     return methods[Math.floor(Math.random() * methods.length)];
   };
 
+  // File to Base64 conversion
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove data URL prefix to get pure base64
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = error => reject(error);
+    });
+  };
+
+  // OpenAI GPT-4 Vision API call
+  const analyzeInvoiceWithAI = async (base64Image: string, mimeType: string): Promise<any> => {
+    try {
+      const response = await openai.chat.completions.create({
+        model: "gpt-4-vision-preview",
+        messages: [
+          {
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: `Analyze this Indian business invoice/receipt and extract the following information in JSON format:
+                {
+                  "vendor": "Company/vendor name",
+                  "amount": "Total amount as number",
+                  "date": "Date in YYYY-MM-DD format",
+                  "category": "One of: Office Supplies, Travel, Food & Entertainment, Equipment, Utilities, Professional Services",
+                  "invoiceNumber": "Invoice/receipt number if available",
+                  "confidence": "Confidence score 0-100"
+                }
+                
+                Focus on Indian business context. Look for ₹ amounts, GST details, and common Indian vendors.`
+              },
+              {
+                type: "image_url",
+                image_url: {
+                  url: `data:${mimeType};base64,${base64Image}`
+                }
+              }
+            ]
+          }
+        ],
+        max_tokens: 500
+      });
+
+      const content = response.choices[0]?.message?.content;
+      if (content) {
+        try {
+          return JSON.parse(content);
+        } catch (parseError) {
+          console.error('Failed to parse AI response:', parseError);
+          return null;
+        }
+      }
+      return null;
+    } catch (error) {
+      console.error('OpenAI API error:', error);
+      return null;
+    }
+  };
+
   const extractExpenseFromOCR = (text: string, confidence: number, filename: string, uploadId: string): Expense => {
     // Basic OCR data extraction patterns
     const amountPattern = /₹\s*(\d{1,3}(?:,\d{3})*(?:\.\d{2})?)/g;
@@ -305,7 +378,70 @@ function App() {
     setOcrProgress(0);
 
     try {
-      // Process with Tesseract OCR
+      // First, try OpenAI GPT-4 Vision for better accuracy
+      try {
+        const base64 = await fileToBase64(file);
+        const aiResult = await analyzeInvoiceWithAI(base64, file.type);
+        
+        if (aiResult && aiResult.confidence > 70) {
+          // Convert file to base64
+          const reader = new FileReader();
+          const fileData = await new Promise<string>((resolve, reject) => {
+            reader.onload = () => resolve(reader.result as string);
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+          });
+
+          // Store upload data with AI results
+          const uploadedFile: UploadedFile = {
+            id: `upload_${Date.now()}`,
+            filename: file.name,
+            filesize: file.size,
+            uploadDate: new Date().toISOString(),
+            processed: true,
+            fileData,
+            extractedText: `Vendor: ${aiResult.vendor}\nAmount: ₹${aiResult.amount}\nDate: ${aiResult.date}\nCategory: ${aiResult.category}`,
+            confidence: aiResult.confidence
+          };
+
+          // Save to localStorage
+          const existingUploads = JSON.parse(localStorage.getItem('financeUploads') || '[]');
+          existingUploads.push(uploadedFile);
+          localStorage.setItem('financeUploads', JSON.stringify(existingUploads));
+
+          // Create expense data from AI results
+          const expenseData: Expense = {
+            id: `exp_${Date.now()}`,
+            vendor: aiResult.vendor,
+            amount: aiResult.amount,
+            category: aiResult.category,
+            date: aiResult.date,
+            invoiceNumber: aiResult.invoiceNumber || generateInvoiceNumber(),
+            status: 'processed',
+            paymentMethod: getRandomPaymentMethod(),
+            uploadId: uploadedFile.id,
+            filename: file.name,
+            confidence: aiResult.confidence
+          };
+          
+          // Save expense data
+          const existingExpenses = JSON.parse(localStorage.getItem('financeExpenses') || '[]');
+          existingExpenses.push(expenseData);
+          localStorage.setItem('financeExpenses', JSON.stringify(existingExpenses));
+
+          setUploadState(prev => ({
+            ...prev,
+            isProcessing: false,
+            isComplete: true,
+            uploadedFile
+          }));
+          return;
+        }
+      } catch (aiError) {
+        console.log('AI processing failed, falling back to OCR:', aiError);
+      }
+
+      // Fallback to Tesseract OCR
       const result = await Tesseract.recognize(file, 'eng+hin', {
         logger: (m) => {
           if (m.status === 'recognizing text') {
