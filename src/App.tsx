@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target, X, Check } from 'lucide-react';
+import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target, X, Check, Home, Plus, Download, Calendar, DollarSign, Package } from 'lucide-react';
 
 interface UploadedFile {
   id: string;
@@ -20,7 +20,24 @@ interface UploadState {
   error: string | null;
 }
 
+interface Expense {
+  id: string;
+  vendor: string;
+  amount: number;
+  category: string;
+  date: string;
+  uploadId?: string;
+  filename?: string;
+}
+
+interface ExpenseSummary {
+  total: number;
+  thisMonth: number;
+  topCategory: string;
+}
+
 function App() {
+  const [currentView, setCurrentView] = React.useState<'home' | 'dashboard'>('home');
   const [uploadState, setUploadState] = React.useState<UploadState>({
     isDragging: false,
     isUploading: false,
@@ -31,12 +48,83 @@ function App() {
     error: null
   });
 
+  // Initialize sample data on component mount
+  React.useEffect(() => {
+    const existingExpenses = localStorage.getItem('financeExpenses');
+    if (!existingExpenses) {
+      const sampleExpenses: Expense[] = [
+        {
+          id: 'exp_001',
+          vendor: 'Swiggy Corporate',
+          amount: 2340,
+          category: 'Food & Entertainment',
+          date: '2025-01-08'
+        },
+        {
+          id: 'exp_002',
+          vendor: 'Amazon Business',
+          amount: 8750,
+          category: 'Office Supplies',
+          date: '2025-01-07'
+        },
+        {
+          id: 'exp_003',
+          vendor: 'Reliance Digital',
+          amount: 15000,
+          category: 'Equipment',
+          date: '2025-01-05'
+        },
+        {
+          id: 'exp_004',
+          vendor: 'Uber Business',
+          amount: 1250,
+          category: 'Travel',
+          date: '2025-01-04'
+        }
+      ];
+      localStorage.setItem('financeExpenses', JSON.stringify(sampleExpenses));
+    }
+  }, []);
+
   const formatFileSize = (bytes: number): string => {
     if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));
     return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  };
+
+  const formatCurrency = (amount: number): string => {
+    return new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
+  };
+
+  const generateMockExpense = (uploadedFile: UploadedFile): Expense => {
+    const vendors = [
+      'Swiggy Corporate', 'Amazon Business', 'Reliance Digital', 'Flipkart Business',
+      'Uber Business', 'Ola Corporate', 'BigBasket', 'Zomato Business',
+      'Paytm Business', 'HDFC Bank', 'Airtel Business', 'Jio Business'
+    ];
+    
+    const categories = ['Office Supplies', 'Travel', 'Food & Entertainment', 'Equipment', 'Utilities', 'Marketing'];
+    
+    const randomVendor = vendors[Math.floor(Math.random() * vendors.length)];
+    const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+    const randomAmount = Math.floor(Math.random() * 13750) + 1250; // ₹1,250 to ₹15,000
+    
+    return {
+      id: `exp_${Date.now()}`,
+      vendor: randomVendor,
+      amount: randomAmount,
+      category: randomCategory,
+      date: new Date().toISOString().split('T')[0],
+      uploadId: uploadedFile.id,
+      filename: uploadedFile.filename
+    };
   };
 
   const validateFile = (file: File): string | null => {
@@ -117,6 +205,12 @@ function App() {
       setTimeout(() => {
         const processedFile = { ...uploadedFile, processed: true };
         
+        // Generate mock expense for the uploaded file
+        const mockExpense = generateMockExpense(processedFile);
+        const existingExpenses = JSON.parse(localStorage.getItem('financeExpenses') || '[]');
+        existingExpenses.push(mockExpense);
+        localStorage.setItem('financeExpenses', JSON.stringify(existingExpenses));
+        
         // Update localStorage with processed status
         const uploads = JSON.parse(localStorage.getItem('financeUploads') || '[]');
         const updatedUploads = uploads.map((upload: UploadedFile) => 
@@ -181,8 +275,51 @@ function App() {
   };
 
   const viewDashboard = () => {
-    // This would navigate to dashboard in a real app
-    alert('Dashboard feature coming soon! Your file has been processed and saved.');
+    setCurrentView('dashboard');
+  };
+
+  const goHome = () => {
+    setCurrentView('home');
+  };
+
+  const getExpenses = (): Expense[] => {
+    return JSON.parse(localStorage.getItem('financeExpenses') || '[]');
+  };
+
+  const getExpenseSummary = (): ExpenseSummary => {
+    const expenses = getExpenses();
+    const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    
+    const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
+    const thisMonth = expenses
+      .filter(exp => exp.date.startsWith(currentMonth))
+      .reduce((sum, exp) => sum + exp.amount, 0);
+    
+    const categoryTotals: { [key: string]: number } = {};
+    expenses.forEach(exp => {
+      categoryTotals[exp.category] = (categoryTotals[exp.category] || 0) + exp.amount;
+    });
+    
+    const topCategory = Object.keys(categoryTotals).reduce((a, b) => 
+      categoryTotals[a] > categoryTotals[b] ? a : b, 'Office Supplies'
+    );
+    
+    return { total, thisMonth, topCategory };
+  };
+
+  const getCategoryData = () => {
+    const expenses = getExpenses();
+    const categoryTotals: { [key: string]: number } = {};
+    
+    expenses.forEach(exp => {
+      categoryTotals[exp.category] = (categoryTotals[exp.category] || 0) + exp.amount;
+    });
+    
+    return Object.entries(categoryTotals).map(([category, amount]) => ({
+      category,
+      amount,
+      percentage: Math.round((amount / expenses.reduce((sum, exp) => sum + exp.amount, 0)) * 100)
+    }));
   };
 
   const testimonials = [
@@ -213,6 +350,181 @@ function App() {
       description: "Generate comprehensive expense reports and financial summaries in seconds, not hours of manual work."
     }
   ];
+
+  if (currentView === 'dashboard') {
+    const expenses = getExpenses();
+    const summary = getExpenseSummary();
+    const categoryData = getCategoryData();
+
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Dashboard Header */}
+        <nav className="bg-white shadow-sm border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center">
+                <FileText className="w-8 h-8 text-[#002349]" />
+                <div className="ml-2">
+                  <span className="text-2xl font-black text-[#002349]">FinanceSaathi Dashboard</span>
+                </div>
+              </div>
+              <button 
+                onClick={goHome}
+                className="flex items-center gap-2 bg-[#002349] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#003a66] transition-colors"
+              >
+                <Home className="w-4 h-4" />
+                Home
+              </button>
+            </div>
+          </div>
+        </nav>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Total Expenses</p>
+                  <p className="text-2xl font-bold text-[#002349]">{formatCurrency(summary.total)}</p>
+                </div>
+                <div className="bg-orange-50 p-3 rounded-full">
+                  <DollarSign className="w-6 h-6 text-[#f97316]" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">This Month</p>
+                  <p className="text-2xl font-bold text-[#002349]">{formatCurrency(summary.thisMonth)}</p>
+                </div>
+                <div className="bg-green-50 p-3 rounded-full">
+                  <Calendar className="w-6 h-6 text-green-500" />
+                </div>
+              </div>
+            </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Top Category</p>
+                  <p className="text-2xl font-bold text-[#002349]">{summary.topCategory}</p>
+                </div>
+                <div className="bg-blue-50 p-3 rounded-full">
+                  <Package className="w-6 h-6 text-blue-500" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Category Spending Chart */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+            <h3 className="text-lg font-semibold text-[#002349] mb-4">Spending by Category</h3>
+            <div className="space-y-4">
+              {categoryData.map((item, index) => (
+                <div key={index} className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-4 h-4 bg-[#f97316] rounded-full" style={{
+                      backgroundColor: `hsl(${index * 60}, 70%, 50%)`
+                    }}></div>
+                    <span className="font-medium text-gray-700">{item.category}</span>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="w-32 bg-gray-200 rounded-full h-2">
+                      <div 
+                        className="h-2 rounded-full"
+                        style={{
+                          width: `${item.percentage}%`,
+                          backgroundColor: `hsl(${index * 60}, 70%, 50%)`
+                        }}
+                      ></div>
+                    </div>
+                    <span className="font-semibold text-[#002349] w-20 text-right">
+                      {formatCurrency(item.amount)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex flex-wrap gap-4 mb-8">
+            <button 
+              onClick={goHome}
+              className="flex items-center gap-2 bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              Add New Expense
+            </button>
+            <button className="flex items-center gap-2 bg-[#002349] hover:bg-[#003a66] text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+              <Download className="w-4 h-4" />
+              Export Report
+            </button>
+          </div>
+
+          {/* Expenses Table */}
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-4 border-b border-gray-100">
+              <h3 className="text-lg font-semibold text-[#002349]">Recent Expenses</h3>
+            </div>
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead className="bg-gray-50">
+                  <tr>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                  </tr>
+                </thead>
+                <tbody className="bg-white divide-y divide-gray-200">
+                  {expenses.map((expense) => (
+                    <tr key={expense.id} className="hover:bg-gray-50">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                        {new Date(expense.date).toLocaleDateString('en-IN')}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                        {expense.vendor}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm font-semibold text-[#002349]">
+                        {formatCurrency(expense.amount)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                          {expense.category}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                          <CheckCircle className="w-3 h-3 mr-1" />
+                          Processed
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {expense.filename ? (
+                          <div className="flex items-center gap-1">
+                            <Upload className="w-3 h-3" />
+                            <span className="truncate max-w-24">{expense.filename}</span>
+                          </div>
+                        ) : (
+                          'Manual Entry'
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-white">
