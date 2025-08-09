@@ -378,35 +378,6 @@ function App() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002349] mb-4 px-4">
-              Everything Your Business Needs
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto px-4">
-              Powerful features designed to streamline your financial workflow
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-            {features.map((feature, index) => (
-              <div key={index} className="bg-white rounded-xl p-6 sm:p-8 hover:shadow-lg transition-shadow">
-                <div className="mb-4 sm:mb-6">
-                  {feature.icon}
-                </div>
-                <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600 leading-relaxed text-sm sm:text-base">
-                  {feature.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* Testimonials */}
       <section className="py-12 sm:py-16 lg:py-20 bg-white">
