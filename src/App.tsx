@@ -353,10 +353,14 @@ function App() {
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg border-2 border-orange-500 order-1">
                 <div className="text-center">
                   <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Base</h3>
+                  <div className="bg-orange-100 text-orange-800 text-sm font-semibold px-3 py-1 rounded-full mb-3">
+                    14-day FREE trial
+                  </div>
                   <div className="text-3xl sm:text-4xl font-bold text-orange-500 mb-4">
                     ₹199<span className="text-lg text-gray-500">/month</span>
                   </div>
                   <p className="text-gray-600 mb-6">Perfect for small businesses getting started</p>
+                  <p className="text-sm text-gray-500 mb-4">No setup fees</p>
                   <button className="bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold w-full transition-colors min-h-[44px]">
                     Start Free Trial
                   </button>
@@ -366,10 +370,14 @@ function App() {
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75 order-2">
                 <div className="text-center">
                   <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Smart</h3>
+                  <div className="bg-gray-100 text-gray-500 text-sm font-semibold px-3 py-1 rounded-full mb-3">
+                    14-day FREE trial
+                  </div>
                   <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
                     ₹599<span className="text-lg text-gray-400">/month</span>
                   </div>
                   <p className="text-gray-600 mb-6">Advanced features for growing businesses</p>
+                  <p className="text-sm text-gray-500 mb-4">No setup fees</p>
                   <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed min-h-[44px]">
                     Coming Soon
                   </button>
@@ -379,10 +387,14 @@ function App() {
               <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75 order-3">
                 <div className="text-center">
                   <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Saathi</h3>
+                  <div className="bg-gray-100 text-gray-500 text-sm font-semibold px-3 py-1 rounded-full mb-3">
+                    14-day FREE trial
+                  </div>
                   <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
                     ₹1299<span className="text-lg text-gray-400">/month</span>
                   </div>
                   <p className="text-gray-600 mb-6">Complete solution for established businesses</p>
+                  <p className="text-sm text-gray-500 mb-4">No setup fees</p>
                   <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed min-h-[44px]">
                     Coming Soon
                   </button>
