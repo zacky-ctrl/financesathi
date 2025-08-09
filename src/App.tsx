@@ -60,11 +60,13 @@ function App() {
           <div className="flex justify-between items-center py-4">
             <div className="flex items-center">
               <FileText className="w-8 h-8 text-[#002349]" />
-              <span className="ml-2 text-3xl font-black text-[#002349]">FinanceSaathi</span>
-            </div>
-            <div className="flex items-center gap-2 text-gray-600 text-sm">
-              <Users className="w-4 h-4 text-[#f97316]" />
-              <span>Trusted by 500+ Indian businesses</span>
+              <div className="ml-2">
+                <span className="text-3xl font-black text-[#002349]">FinanceSaathi</span>
+                <div className="flex items-center gap-2 text-gray-600 text-sm mt-1">
+                  <Users className="w-4 h-4 text-[#f97316]" />
+                  <span>Trusted by 500+ Indian businesses</span>
+                </div>
+              </div>
             </div>
             <button className="bg-[#002349] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#003a66] transition-colors min-h-[44px]">
               Login
