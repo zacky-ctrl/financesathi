@@ -264,56 +264,6 @@ function App() {
         </div>
       </section>
 
-      {/* Problem Section */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-8 sm:mb-12 lg:mb-16">
-            <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002349] mb-4 px-4">
-              Are You <span className="text-[#f97316]">Drowning</span> in Business Paperwork?
-            </h2>
-            <p className="text-lg sm:text-xl text-gray-600 px-4 max-w-4xl mx-auto">
-              You're not alone - 500+ Indian SMBs faced the same challenges before finding their Saathi
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
-            <div className="text-center">
-              <div className="bg-red-50 p-4 sm:p-5 rounded-full mb-4 sm:mb-6 w-16 h-16 mx-auto flex items-center justify-center">
-                <FileText className="w-7 h-7 text-red-500" />
-              </div>
-              <h3 className="font-bold text-[#002349] mb-3 sm:mb-4 text-base sm:text-lg">
-                20+ hours weekly spent on manual invoice data entry
-              </h3>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Tedious data entry takes away time from growing your business
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-red-50 p-4 sm:p-5 rounded-full mb-4 sm:mb-6 w-16 h-16 mx-auto flex items-center justify-center">
-                <Clock className="w-7 h-7 text-red-500" />
-              </div>
-              <h3 className="font-bold text-[#002349] mb-3 sm:mb-4 text-base sm:text-lg">
-                Lost receipts creating expense tracking headaches
-              </h3>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Important receipts get lost, making tax time a nightmare
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="bg-red-50 p-4 sm:p-5 rounded-full mb-4 sm:mb-6 w-16 h-16 mx-auto flex items-center justify-center">
-                <BarChart3 className="w-7 h-7 text-red-500" />
-              </div>
-              <h3 className="font-bold text-[#002349] mb-3 sm:mb-4 text-base sm:text-lg">
-                No clear picture of where business money is going
-              </h3>
-              <p className="text-gray-600 text-sm sm:text-base">
-                Without insights, you can't make smart financial decisions
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* How It Works */}
       <section className="py-12 sm:py-16 lg:py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
