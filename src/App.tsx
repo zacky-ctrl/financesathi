@@ -31,22 +31,22 @@ function App() {
 
   const features = [
     {
-      icon: <Upload className="w-8 h-8 text-green-500" />,
+      icon: <Upload className="w-8 h-8 text-[#22c55e]" />,
       title: "Smart Invoice Processing",
       description: "AI automatically extracts data from invoices, receipts, and bills. Simply upload and let our technology handle the rest."
     },
     {
-      icon: <Target className="w-8 h-8 text-green-500" />,
+      icon: <Target className="w-8 h-8 text-[#22c55e]" />,
       title: "Automatic Expense Categorization",
       description: "Intelligent categorization of all your business expenses with customizable categories for better organization."
     },
     {
-      icon: <BarChart3 className="w-8 h-8 text-green-500" />,
+      icon: <BarChart3 className="w-8 h-8 text-[#22c55e]" />,
       title: "Real-time Business Dashboards",
       description: "Visual dashboards that give you instant insights into your spending patterns and business financial health."
     },
     {
-      icon: <FileText className="w-8 h-8 text-green-500" />,
+      icon: <FileText className="w-8 h-8 text-[#22c55e]" />,
       title: "Instant Summary Reports",
       description: "Generate comprehensive expense reports and financial summaries in seconds, not hours of manual work."
     }
@@ -74,7 +74,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#002349] mb-4 sm:mb-6 leading-tight px-2">
-              Business Finance Made <span className="text-green-600">Aasan</span>
+              Business Finance Made <span className="text-[#22c55e]">Aasan</span>
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
               AI-powered automation that transforms paperwork into business insights
@@ -91,7 +91,7 @@ function App() {
                 >
                   <div className="px-6 py-10 sm:px-10 sm:py-12 text-center">
                     <div className="mb-4">
-                      <Upload className="w-12 h-12 text-gray-400 group-hover:text-blue-500 mx-auto transition-colors" />
+                      <Upload className="w-12 h-12 text-gray-400 group-hover:text-[#22c55e] mx-auto transition-colors" />
                     </div>
                     <p className="text-lg font-medium text-gray-700 mb-2">
                       Drop your invoice here or click to browse
@@ -112,29 +112,29 @@ function App() {
             </div>
 
             <div className="flex items-center justify-center gap-2 text-gray-600 px-4 mt-8">
-              <Users className="w-5 h-5 text-green-500" />
+              <Users className="w-5 h-5 text-[#22c55e]" />
               <span className="font-medium text-sm sm:text-base text-center">Trusted by 500+ Indian businesses</span>
             </div>
 
             {/* Trust Indicators */}
             <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center px-4">
               <div className="flex flex-col items-center">
-                <div className="bg-green-100 p-3 sm:p-4 rounded-full mb-3">
-                  <Clock className="w-6 h-6 text-green-600" />
+                <div className="bg-[#dcfce7] p-3 sm:p-4 rounded-full mb-3">
+                  <Clock className="w-6 h-6 text-[#22c55e]" />
                 </div>
                 <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Save 20+ Hours Monthly</h3>
                 <p className="text-gray-600 text-sm">Automated expense processing</p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-green-100 p-3 sm:p-4 rounded-full mb-3">
-                  <TrendingUp className="w-6 h-6 text-green-600" />
+                <div className="bg-[#dcfce7] p-3 sm:p-4 rounded-full mb-3">
+                  <TrendingUp className="w-6 h-6 text-[#22c55e]" />
                 </div>
                 <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Get Clear Spending Insights</h3>
                 <p className="text-gray-600 text-sm">Visual dashboards & analytics</p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-green-100 p-3 sm:p-4 rounded-full mb-3">
-                  <BarChart3 className="w-6 h-6 text-green-600" />
+                <div className="bg-[#dcfce7] p-3 sm:p-4 rounded-full mb-3">
+                  <BarChart3 className="w-6 h-6 text-[#22c55e]" />
                 </div>
                 <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Make Data-Driven Decisions</h3>
                 <p className="text-gray-600 text-sm">Actionable business intelligence</p>
@@ -158,28 +158,28 @@ function App() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             <div className="text-center">
-              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
+              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 1
               </div>
               <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Upload</h3>
               <p className="text-gray-600 text-sm sm:text-base px-4">Take a photo or upload your invoices, receipts, and bills</p>
             </div>
             <div className="text-center">
-              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
+              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 2
               </div>
               <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Categorize</h3>
               <p className="text-gray-600 text-sm sm:text-base px-4">AI automatically categorizes and organizes your expenses</p>
             </div>
             <div className="text-center">
-              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
+              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 3
               </div>
               <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Analyze</h3>
               <p className="text-gray-600 text-sm sm:text-base px-4">Get insights into spending patterns and business trends</p>
             </div>
             <div className="text-center">
-              <div className="bg-orange-500 text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
+              <div className="bg-[#f97316] text-white w-12 h-12 sm:w-16 sm:h-16 rounded-full flex items-center justify-center text-xl sm:text-2xl font-bold mx-auto mb-4 sm:mb-6">
                 4
               </div>
               <h3 className="text-lg sm:text-xl font-semibold text-[#002349] mb-3 sm:mb-4 px-4">Report</h3>
@@ -210,7 +210,7 @@ function App() {
                     ₹199<span className="text-lg text-gray-500">/month</span>
                   </div>
                   <p className="text-gray-600 mb-6">Perfect for small businesses getting started</p>
-                  <button className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-3 rounded-lg font-semibold w-full transition-colors min-h-[44px]">
+                  <button className="bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold w-full transition-colors min-h-[44px]">
                     Start Free Trial
                   </button>
                 </div>
@@ -326,15 +326,15 @@ function App() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-gray-300 px-4">
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-400" />
+              <CheckCircle className="w-5 h-5 text-[#22c55e]" />
               <span className="text-sm sm:text-base">14-day free trial</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-400" />
+              <CheckCircle className="w-5 h-5 text-[#22c55e]" />
               <span className="text-sm sm:text-base">No setup fees</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-green-400" />
+              <CheckCircle className="w-5 h-5 text-[#22c55e]" />
               <span className="text-sm sm:text-base">Cancel anytime</span>
             </div>
           </div>
