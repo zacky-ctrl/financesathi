@@ -133,23 +133,6 @@ function App() {
               </div>
             </div>
 
-            {/* Social Proof and CTA Row */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 mb-4">
-              <div className="flex items-center gap-2 text-gray-600">
-                <div className="flex -space-x-2">
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full border-2 border-white"></div>
-                  <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-blue-500 rounded-full border-2 border-white"></div>
-                  <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-red-500 rounded-full border-2 border-white"></div>
-                  <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full border-2 border-white"></div>
-                </div>
-                <span className="text-sm font-medium">500+ businesses trust us</span>
-              </div>
-              <button className="bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold transition-colors shadow-lg flex items-center gap-2">
-                Start Free Trial
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-gray-500">
               <div className="flex items-center gap-2">
