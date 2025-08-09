@@ -736,16 +736,6 @@ function App() {
           </div>
         </div>
       </div>
-      
-      {/* Dashboard Access Link */}
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => setCurrentView('dashboard')}
-          className="text-sm text-orange-500 hover:underline transition-all duration-200"
-        >
-          Already have data? View Dashboard →
-        </button>
-      </div>
     );
   }
 
