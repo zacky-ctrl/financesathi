@@ -31,22 +31,22 @@ function App() {
 
   const features = [
     {
-      icon: <Upload className="w-8 h-8 text-[#22c55e]" />,
+      icon: <Upload className="w-8 h-8 text-orange-500" />,
       title: "Smart Invoice Processing",
       description: "AI automatically extracts data from invoices, receipts, and bills. Simply upload and let our technology handle the rest."
     },
     {
-      icon: <Target className="w-8 h-8 text-[#22c55e]" />,
+      icon: <Target className="w-8 h-8 text-orange-500" />,
       title: "Automatic Expense Categorization",
       description: "Intelligent categorization of all your business expenses with customizable categories for better organization."
     },
     {
-      icon: <BarChart3 className="w-8 h-8 text-[#22c55e]" />,
+      icon: <BarChart3 className="w-8 h-8 text-orange-500" />,
       title: "Real-time Business Dashboards",
       description: "Visual dashboards that give you instant insights into your spending patterns and business financial health."
     },
     {
-      icon: <FileText className="w-8 h-8 text-[#22c55e]" />,
+      icon: <FileText className="w-8 h-8 text-orange-500" />,
       title: "Instant Summary Reports",
       description: "Generate comprehensive expense reports and financial summaries in seconds, not hours of manual work."
     }
@@ -91,13 +91,13 @@ function App() {
                 >
                   <div className="px-6 py-10 sm:px-10 sm:py-12 text-center">
                     <div className="mb-4">
-                      <Upload className="w-12 h-12 text-gray-400 group-hover:text-[#22c55e] mx-auto transition-colors" />
+                     <Upload className="w-12 h-12 text-orange-500 group-hover:text-orange-600 mx-auto transition-colors" />
                     </div>
                     <p className="text-lg font-medium text-gray-700 mb-2">
                       Drop your invoice here or click to browse
                     </p>
-                    <p className="text-sm text-gray-500">
-                      Supports PDF, JPG, PNG • See instant AI processing
+                   <p className="text-sm text-gray-500">
+                     Supports PDF, JPG, PNG • <span className="text-orange-500 font-medium">See instant AI processing</span>
                     </p>
                   </div>
                   <input
@@ -112,29 +112,29 @@ function App() {
             </div>
 
             <div className="flex items-center justify-center gap-2 text-gray-600 px-4 mt-8">
-              <Users className="w-5 h-5 text-[#22c55e]" />
+              <Users className="w-5 h-5 text-orange-500" />
               <span className="font-medium text-sm sm:text-base text-center">Trusted by 500+ Indian businesses</span>
             </div>
 
             {/* Trust Indicators */}
             <div className="mt-8 sm:mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 text-center px-4">
               <div className="flex flex-col items-center">
-                <div className="bg-[#dcfce7] p-3 sm:p-4 rounded-full mb-3">
-                  <Clock className="w-6 h-6 text-[#22c55e]" />
+                <div className="bg-orange-50 p-3 sm:p-4 rounded-full mb-3">
+                  <Clock className="w-6 h-6 text-orange-500" />
                 </div>
                 <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Save 20+ Hours Monthly</h3>
                 <p className="text-gray-600 text-sm">Automated expense processing</p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-[#dcfce7] p-3 sm:p-4 rounded-full mb-3">
-                  <TrendingUp className="w-6 h-6 text-[#22c55e]" />
+                <div className="bg-orange-50 p-3 sm:p-4 rounded-full mb-3">
+                  <TrendingUp className="w-6 h-6 text-orange-500" />
                 </div>
                 <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Get Clear Spending Insights</h3>
                 <p className="text-gray-600 text-sm">Visual dashboards & analytics</p>
               </div>
               <div className="flex flex-col items-center">
-                <div className="bg-[#dcfce7] p-3 sm:p-4 rounded-full mb-3">
-                  <BarChart3 className="w-6 h-6 text-[#22c55e]" />
+                <div className="bg-orange-50 p-3 sm:p-4 rounded-full mb-3">
+                  <BarChart3 className="w-6 h-6 text-orange-500" />
                 </div>
                 <h3 className="font-semibold text-[#002349] mb-1 text-sm sm:text-base">Make Data-Driven Decisions</h3>
                 <p className="text-gray-600 text-sm">Actionable business intelligence</p>
@@ -326,15 +326,15 @@ function App() {
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6 text-gray-300 px-4">
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-[#22c55e]" />
+              <CheckCircle className="w-5 h-5 text-orange-400" />
               <span className="text-sm sm:text-base">14-day free trial</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-[#22c55e]" />
+              <CheckCircle className="w-5 h-5 text-orange-400" />
               <span className="text-sm sm:text-base">No setup fees</span>
             </div>
             <div className="flex items-center gap-2">
-              <CheckCircle className="w-5 h-5 text-[#22c55e]" />
+              <CheckCircle className="w-5 h-5 text-orange-400" />
               <span className="text-sm sm:text-base">Cancel anytime</span>
             </div>
           </div>
