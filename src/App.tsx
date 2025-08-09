@@ -115,30 +115,6 @@ function App() {
               </div>
             </div>
 
-            {/* Trust Indicators */}
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 sm:gap-10 text-center px-4">
-              <div className="flex flex-col items-center">
-                <div className="bg-orange-50 p-4 sm:p-5 rounded-full mb-4">
-                  <Clock className="w-7 h-7 text-[#f97316]" />
-                </div>
-                <h3 className="font-bold text-[#002349] mb-2 text-base sm:text-lg">Save 20+ Hours Monthly</h3>
-                <p className="text-gray-600 text-sm sm:text-base">Automated expense processing</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="bg-orange-50 p-4 sm:p-5 rounded-full mb-4">
-                  <TrendingUp className="w-7 h-7 text-[#f97316]" />
-                </div>
-                <h3 className="font-bold text-[#002349] mb-2 text-base sm:text-lg">Get Clear Spending Insights</h3>
-                <p className="text-gray-600 text-sm sm:text-base">Visual dashboards & analytics</p>
-              </div>
-              <div className="flex flex-col items-center">
-                <div className="bg-orange-50 p-4 sm:p-5 rounded-full mb-4">
-                  <BarChart3 className="w-7 h-7 text-[#f97316]" />
-                </div>
-                <h3 className="font-bold text-[#002349] mb-2 text-base sm:text-lg">Make Data-Driven Decisions</h3>
-                <p className="text-gray-600 text-sm sm:text-base">Actionable business intelligence</p>
-              </div>
-            </div>
           </div>
         </div>
       </section>
