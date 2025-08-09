@@ -1,5 +1,5 @@
 import React from 'react';
-import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target, X, Check, Home, Plus, Download, Calendar, DollarSign, Package } from 'lucide-react';
+import { Zap, FileText, Shield, ArrowRight, CheckCircle, Users, Clock, TrendingUp, Star, BarChart3, Upload, Target, X, Check, Home, Plus, Download, Calendar, DollarSign, Package, Search, Filter, Eye, CreditCard, Receipt, Activity } from 'lucide-react';
 
 interface UploadedFile {
   id: string;
@@ -26,6 +26,9 @@ interface Expense {
   amount: number;
   category: string;
   date: string;
+  invoiceNumber: string;
+  status: string;
+  paymentMethod: string;
   uploadId?: string;
   filename?: string;
 }
@@ -33,11 +36,15 @@ interface Expense {
 interface ExpenseSummary {
   total: number;
   thisMonth: number;
+  transactionCount: number;
+  averageTransaction: number;
   topCategory: string;
 }
 
 function App() {
   const [currentView, setCurrentView] = React.useState<'home' | 'dashboard'>('home');
+  const [searchTerm, setSearchTerm] = React.useState('');
+  const [selectedCategory, setSelectedCategory] = React.useState('All');
   const [uploadState, setUploadState] = React.useState<UploadState>({
     isDragging: false,
     isUploading: false,
@@ -58,28 +65,70 @@ function App() {
           vendor: 'Swiggy Corporate',
           amount: 2340,
           category: 'Food & Entertainment',
-          date: '2025-01-08'
+          date: '2025-01-08',
+          invoiceNumber: 'INV-2025-001',
+          status: 'processed',
+          paymentMethod: 'UPI'
         },
         {
           id: 'exp_002',
           vendor: 'Amazon Business',
           amount: 8750,
           category: 'Office Supplies',
-          date: '2025-01-07'
+          date: '2025-01-07',
+          invoiceNumber: 'INV-2025-002',
+          status: 'processed',
+          paymentMethod: 'Credit Card'
         },
         {
           id: 'exp_003',
           vendor: 'Reliance Digital',
           amount: 15000,
           category: 'Equipment',
-          date: '2025-01-05'
+          date: '2025-01-05',
+          invoiceNumber: 'INV-2025-003',
+          status: 'processed',
+          paymentMethod: 'Bank Transfer'
         },
         {
           id: 'exp_004',
           vendor: 'Uber Business',
           amount: 1250,
           category: 'Travel',
-          date: '2025-01-04'
+          date: '2025-01-04',
+          invoiceNumber: 'INV-2025-004',
+          status: 'processed',
+          paymentMethod: 'UPI'
+        },
+        {
+          id: 'exp_005',
+          vendor: 'Ola Cabs',
+          amount: 3200,
+          category: 'Travel',
+          date: '2025-01-06',
+          invoiceNumber: 'INV-2025-005',
+          status: 'processed',
+          paymentMethod: 'UPI'
+        },
+        {
+          id: 'exp_006',
+          vendor: 'HDFC Bank',
+          amount: 5500,
+          category: 'Professional Services',
+          date: '2025-01-03',
+          invoiceNumber: 'INV-2025-006',
+          status: 'processed',
+          paymentMethod: 'Bank Transfer'
+        },
+        {
+          id: 'exp_007',
+          vendor: 'Airtel Business',
+          amount: 2800,
+          category: 'Utilities',
+          date: '2025-01-02',
+          invoiceNumber: 'INV-2025-007',
+          status: 'processed',
+          paymentMethod: 'Auto Debit'
         }
       ];
       localStorage.setItem('financeExpenses', JSON.stringify(sampleExpenses));
@@ -103,6 +152,11 @@ function App() {
     }).format(amount);
   };
 
+  const generateInvoiceNumber = (): string => {
+    const year = new Date().getFullYear();
+    const random = Math.floor(Math.random() * 999) + 1;
+    return `INV-${year}-${random.toString().padStart(3, '0')}`;
+  };
   const generateMockExpense = (uploadedFile: UploadedFile): Expense => {
     const vendors = [
       'Swiggy Corporate', 'Amazon Business', 'Reliance Digital', 'Flipkart Business',
@@ -110,11 +164,13 @@ function App() {
       'Paytm Business', 'HDFC Bank', 'Airtel Business', 'Jio Business'
     ];
     
-    const categories = ['Office Supplies', 'Travel', 'Food & Entertainment', 'Equipment', 'Utilities', 'Marketing'];
+    const categories = ['Office Supplies', 'Travel', 'Food & Entertainment', 'Equipment', 'Utilities', 'Professional Services'];
+    const paymentMethods = ['UPI', 'Credit Card', 'Bank Transfer', 'Cash', 'Auto Debit'];
     
     const randomVendor = vendors[Math.floor(Math.random() * vendors.length)];
     const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-    const randomAmount = Math.floor(Math.random() * 13750) + 1250; // ₹1,250 to ₹15,000
+    const randomAmount = Math.floor(Math.random() * 23750) + 1250; // ₹1,250 to ₹25,000
+    const randomPaymentMethod = paymentMethods[Math.floor(Math.random() * paymentMethods.length)];
     
     return {
       id: `exp_${Date.now()}`,
@@ -122,6 +178,9 @@ function App() {
       amount: randomAmount,
       category: randomCategory,
       date: new Date().toISOString().split('T')[0],
+      invoiceNumber: generateInvoiceNumber(),
+      status: 'processed',
+      paymentMethod: randomPaymentMethod,
       uploadId: uploadedFile.id,
       filename: uploadedFile.filename
     };
@@ -286,9 +345,14 @@ function App() {
     return JSON.parse(localStorage.getItem('financeExpenses') || '[]');
   };
 
+  const getUploads = (): UploadedFile[] => {
+    return JSON.parse(localStorage.getItem('financeUploads') || '[]');
+  };
   const getExpenseSummary = (): ExpenseSummary => {
     const expenses = getExpenses();
     const total = expenses.reduce((sum, exp) => sum + exp.amount, 0);
+    const transactionCount = expenses.length;
+    const averageTransaction = transactionCount > 0 ? total / transactionCount : 0;
     
     const currentMonth = new Date().toISOString().slice(0, 7); // YYYY-MM
     const thisMonth = expenses
@@ -304,7 +368,7 @@ function App() {
       categoryTotals[a] > categoryTotals[b] ? a : b, 'Office Supplies'
     );
     
-    return { total, thisMonth, topCategory };
+    return { total, thisMonth, transactionCount, averageTransaction, topCategory };
   };
 
   const getCategoryData = () => {
@@ -322,6 +386,29 @@ function App() {
     }));
   };
 
+  const getFilteredExpenses = () => {
+    const expenses = getExpenses();
+    return expenses.filter(expense => {
+      const matchesSearch = expense.vendor.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           expense.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           expense.invoiceNumber.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === 'All' || expense.category === selectedCategory;
+      return matchesSearch && matchesCategory;
+    });
+  };
+
+  const getRecentActivity = () => {
+    const expenses = getExpenses();
+    return expenses
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+      .slice(0, 10);
+  };
+
+  const getUniqueCategories = () => {
+    const expenses = getExpenses();
+    const categories = [...new Set(expenses.map(exp => exp.category))];
+    return ['All', ...categories];
+  };
   const testimonials = [
     { name: "Rajesh Sharma", business: "Sharma Electronics, Delhi", rating: 5 },
     { name: "Priya Patel", business: "Patel Trading Co., Mumbai", rating: 5 },
@@ -353,8 +440,12 @@ function App() {
 
   if (currentView === 'dashboard') {
     const expenses = getExpenses();
+    const uploads = getUploads();
     const summary = getExpenseSummary();
     const categoryData = getCategoryData();
+    const filteredExpenses = getFilteredExpenses();
+    const recentActivity = getRecentActivity();
+    const categories = getUniqueCategories();
 
     return (
       <div className="min-h-screen bg-gray-50">
@@ -365,7 +456,7 @@ function App() {
               <div className="flex items-center">
                 <FileText className="w-8 h-8 text-[#002349]" />
                 <div className="ml-2">
-                  <span className="text-2xl font-black text-[#002349]">FinanceSaathi Dashboard</span>
+                  <span className="text-2xl font-black text-[#002349]">FinanceSaathi Business Dashboard</span>
                 </div>
               </div>
               <button 
@@ -381,12 +472,12 @@ function App() {
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           {/* Summary Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Total Expenses</p>
-                  <p className="text-2xl font-bold text-[#002349]">{formatCurrency(summary.total)}</p>
+                  <p className="text-sm font-medium text-gray-600">Total This Month</p>
+                  <p className="text-2xl font-bold text-[#002349]">{formatCurrency(summary.thisMonth)}</p>
                 </div>
                 <div className="bg-orange-50 p-3 rounded-full">
                   <DollarSign className="w-6 h-6 text-[#f97316]" />
@@ -397,11 +488,11 @@ function App() {
             <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-600">This Month</p>
-                  <p className="text-2xl font-bold text-[#002349]">{formatCurrency(summary.thisMonth)}</p>
+                  <p className="text-sm font-medium text-gray-600">Transactions</p>
+                  <p className="text-2xl font-bold text-[#002349]">{summary.transactionCount}</p>
                 </div>
                 <div className="bg-green-50 p-3 rounded-full">
-                  <Calendar className="w-6 h-6 text-green-500" />
+                  <Receipt className="w-6 h-6 text-green-500" />
                 </div>
               </div>
             </div>
@@ -417,38 +508,106 @@ function App() {
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Category Spending Chart */}
-          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
-            <h3 className="text-lg font-semibold text-[#002349] mb-4">Spending by Category</h3>
-            <div className="space-y-4">
-              {categoryData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="w-4 h-4 bg-[#f97316] rounded-full" style={{
-                      backgroundColor: `hsl(${index * 60}, 70%, 50%)`
-                    }}></div>
-                    <span className="font-medium text-gray-700">{item.category}</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="w-32 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="h-2 rounded-full"
-                        style={{
-                          width: `${item.percentage}%`,
-                          backgroundColor: `hsl(${index * 60}, 70%, 50%)`
-                        }}
-                      ></div>
-                    </div>
-                    <span className="font-semibold text-[#002349] w-20 text-right">
-                      {formatCurrency(item.amount)}
-                    </span>
-                  </div>
+            
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium text-gray-600">Average Transaction</p>
+                  <p className="text-2xl font-bold text-[#002349]">{formatCurrency(summary.averageTransaction)}</p>
                 </div>
-              ))}
+                <div className="bg-purple-50 p-3 rounded-full">
+                  <TrendingUp className="w-6 h-6 text-purple-500" />
+                </div>
+              </div>
             </div>
           </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+            {/* Category Spending Chart */}
+            <div className="lg:col-span-2 bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-semibold text-[#002349] mb-4">Spending by Category</h3>
+              <div className="space-y-4">
+                {categoryData.slice(0, 5).map((item, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-4 h-4 bg-[#f97316] rounded-full" style={{
+                        backgroundColor: `hsl(${index * 60}, 70%, 50%)`
+                      }}></div>
+                      <span className="font-medium text-gray-700">{item.category}</span>
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <div className="w-32 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className="h-2 rounded-full"
+                          style={{
+                            width: `${item.percentage}%`,
+                            backgroundColor: `hsl(${index * 60}, 70%, 50%)`
+                          }}
+                        ></div>
+                      </div>
+                      <span className="font-semibold text-[#002349] w-20 text-right">
+                        {formatCurrency(item.amount)}
+                      </span>
+                      <span className="text-sm text-gray-500 w-12 text-right">
+                        {item.percentage}%
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Recent Activity Feed */}
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+              <h3 className="text-lg font-semibold text-[#002349] mb-4">Recent Activity</h3>
+              <div className="space-y-3">
+                {recentActivity.slice(0, 8).map((expense, index) => (
+                  <div key={index} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
+                    <div className="bg-orange-100 p-2 rounded-full">
+                      <Activity className="w-4 h-4 text-[#f97316]" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900 truncate">
+                        {formatCurrency(expense.amount)} at {expense.vendor}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {expense.category} • {new Date(expense.date).toLocaleDateString('en-IN')}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Recent Uploads Section */}
+          {uploads.length > 0 && (
+            <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-8">
+              <h3 className="text-lg font-semibold text-[#002349] mb-4">Recent Uploads</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {uploads.slice(-6).map((upload) => (
+                  <div key={upload.id} className="border border-gray-200 rounded-lg p-4">
+                    <div className="flex items-start justify-between mb-2">
+                      <div className="flex-1 min-w-0">
+                        <p className="text-sm font-medium text-gray-900 truncate">{upload.filename}</p>
+                        <p className="text-xs text-gray-500">
+                          {formatFileSize(upload.filesize)} • {new Date(upload.uploadDate).toLocaleDateString('en-IN')}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1 text-green-600">
+                        <CheckCircle className="w-4 h-4" />
+                        <span className="text-xs font-medium">Processed</span>
+                      </div>
+                    </div>
+                    <button className="text-xs text-[#f97316] hover:text-[#ea580c] font-medium flex items-center gap-1">
+                      <Eye className="w-3 h-3" />
+                      View Details
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* Action Buttons */}
           <div className="flex flex-wrap gap-4 mb-8">
@@ -457,18 +616,55 @@ function App() {
               className="flex items-center gap-2 bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold transition-colors"
             >
               <Plus className="w-4 h-4" />
-              Add New Expense
+              Upload New Receipt
+            </button>
+            <button className="flex items-center gap-2 bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+              <Plus className="w-4 h-4" />
+              Add Manual Expense
             </button>
             <button className="flex items-center gap-2 bg-[#002349] hover:bg-[#003a66] text-white px-6 py-3 rounded-lg font-semibold transition-colors">
               <Download className="w-4 h-4" />
-              Export Report
+              Export Monthly Report
+            </button>
+            <button className="flex items-center gap-2 bg-[#002349] hover:bg-[#003a66] text-white px-6 py-3 rounded-lg font-semibold transition-colors">
+              <FileText className="w-4 h-4" />
+              Generate GST Summary
             </button>
           </div>
 
+          {/* Search and Filter */}
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100 mb-6">
+            <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <input
+                  type="text"
+                  placeholder="Search expenses by vendor, category, or invoice number..."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f97316] focus:border-transparent"
+                />
+              </div>
+              <div className="relative">
+                <Filter className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="pl-10 pr-8 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#f97316] focus:border-transparent appearance-none bg-white"
+                >
+                  {categories.map((category) => (
+                    <option key={category} value={category}>{category}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
           {/* Expenses Table */}
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
             <div className="px-6 py-4 border-b border-gray-100">
-              <h3 className="text-lg font-semibold text-[#002349]">Recent Expenses</h3>
+              <h3 className="text-lg font-semibold text-[#002349]">
+                All Expenses ({filteredExpenses.length})
+              </h3>
             </div>
             <div className="overflow-x-auto">
               <table className="w-full">
@@ -478,12 +674,14 @@ function App() {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Vendor</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice#</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Payment</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Source</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
-                  {expenses.map((expense) => (
+                  {filteredExpenses.map((expense) => (
                     <tr key={expense.id} className="hover:bg-gray-50">
                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                         {new Date(expense.date).toLocaleDateString('en-IN')}
@@ -499,26 +697,41 @@ function App() {
                           {expense.category}
                         </span>
                       </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        {expense.invoiceNumber}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap">
+                        <div className="flex items-center gap-1">
+                          <CreditCard className="w-3 h-3 text-gray-400" />
+                          <span className="text-sm text-gray-600">{expense.paymentMethod}</span>
+                        </div>
+                      </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           <CheckCircle className="w-3 h-3 mr-1" />
                           Processed
                         </span>
                       </td>
-                      <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                      <td className="px-6 py-4 whitespace-nowrap text-sm">
                         {expense.filename ? (
-                          <div className="flex items-center gap-1">
-                            <Upload className="w-3 h-3" />
-                            <span className="truncate max-w-24">{expense.filename}</span>
-                          </div>
+                          <button className="text-[#f97316] hover:text-[#ea580c] font-medium flex items-center gap-1">
+                            <Eye className="w-3 h-3" />
+                            View Receipt
+                          </button>
                         ) : (
-                          'Manual Entry'
+                          <span className="text-gray-400">Manual Entry</span>
                         )}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
+              {filteredExpenses.length === 0 && (
+                <div className="text-center py-12">
+                  <FileText className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+                  <p className="text-gray-500">No expenses found matching your criteria</p>
+                </div>
+              )}
             </div>
           </div>
         </div>
