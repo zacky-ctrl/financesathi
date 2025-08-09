@@ -53,7 +53,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[#002349] mb-4 sm:mb-6 leading-tight px-2">
-              Tired of Managing Invoices, Receipts & Business Expenses <span className="text-green-600">Manually?</span>
+              Business Finance Made <span className="text-green-600">Aasan</span>
             </h1>
             <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 leading-relaxed px-4">
               AI-powered automation that transforms paperwork into business insights
