@@ -62,6 +62,10 @@ function App() {
               <FileText className="w-8 h-8 text-[#002349]" />
               <span className="ml-2 text-3xl font-black text-[#002349]">FinanceSaathi</span>
             </div>
+            <div className="flex items-center gap-2 text-gray-600 text-sm">
+              <Users className="w-4 h-4 text-[#f97316]" />
+              <span>Trusted by 500+ Indian businesses</span>
+            </div>
             <button className="bg-[#002349] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#003a66] transition-colors min-h-[44px]">
               Login
             </button>
@@ -109,11 +113,6 @@ function App() {
                   />
                 </div>
               </div>
-            </div>
-
-            <div className="flex items-center justify-center gap-3 text-gray-700 px-4 mb-8 sm:mb-10">
-              <Users className="w-6 h-6 text-[#f97316]" />
-              <span className="font-semibold text-base sm:text-lg text-center">Trusted by 500+ Indian businesses</span>
             </div>
 
             {/* Trust Indicators */}
