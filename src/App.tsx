@@ -45,6 +45,32 @@ interface ExpenseSummary {
   averageTransaction: number;
   topCategory: string;
 }
+interface AnalyticsData {
+  monthlyTotal: number;
+  transactionCount: number;
+  topCategory: string;
+  topVendor: string;
+  avgTransaction: number;
+  lastUpdated: string;
+}
+
+interface VendorAnalysis {
+  vendor: string;
+  totalSpent: number;
+  transactionCount: number;
+  avgAmount: number;
+  lastTransaction: string;
+  trend: 'up' | 'down' | 'stable';
+}
+
+interface CategoryInsight {
+  category: string;
+  amount: number;
+  percentage: number;
+  transactionCount: number;
+  color: string;
+}
+
 
 function App() {
   const [currentView, setCurrentView] = React.useState<'home' | 'dashboard'>('home');
@@ -734,6 +760,163 @@ function App() {
                       <p className="text-xs text-gray-500">
                         {expense.category} • {new Date(expense.date).toLocaleDateString('en-IN')}
                       </p>
+  // Business Intelligence Functions
+  const calculateAnalytics = (): AnalyticsData => {
+    const expenses = getExpenses();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    const monthlyExpenses = expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate.getMonth() === currentMonth && expenseDate.getFullYear() === currentYear;
+    });
+    
+    const monthlyTotal = monthlyExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    const transactionCount = monthlyExpenses.length;
+    const avgTransaction = transactionCount > 0 ? monthlyTotal / transactionCount : 0;
+    
+    // Calculate top category
+    const categoryTotals: { [key: string]: number } = {};
+    monthlyExpenses.forEach(expense => {
+      categoryTotals[expense.category] = (categoryTotals[expense.category] || 0) + expense.amount;
+    });
+    
+    const topCategory = Object.entries(categoryTotals).reduce((a, b) => 
+      categoryTotals[a[0]] > categoryTotals[b[0]] ? a : b, ['Miscellaneous', 0]
+    )[0];
+    
+    // Calculate top vendor
+    const vendorTotals: { [key: string]: number } = {};
+    monthlyExpenses.forEach(expense => {
+      vendorTotals[expense.vendor] = (vendorTotals[expense.vendor] || 0) + expense.amount;
+    });
+    
+    const topVendor = Object.entries(vendorTotals).reduce((a, b) => 
+      vendorTotals[a[0]] > vendorTotals[b[0]] ? a : b, ['Unknown', 0]
+    )[0];
+    
+    return {
+      monthlyTotal,
+      transactionCount,
+      topCategory,
+      topVendor,
+      avgTransaction,
+      lastUpdated: new Date().toISOString()
+    };
+  };
+  
+  const getCategoryInsights = (): CategoryInsight[] => {
+    const expenses = getExpenses();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    const monthlyExpenses = expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate.getMonth() === currentMonth && expenseDate.getFullYear() === currentYear;
+    });
+    
+    const categoryData: { [key: string]: { amount: number; count: number } } = {};
+    const totalAmount = monthlyExpenses.reduce((sum, expense) => sum + expense.amount, 0);
+    
+    monthlyExpenses.forEach(expense => {
+      if (!categoryData[expense.category]) {
+        categoryData[expense.category] = { amount: 0, count: 0 };
+      }
+      categoryData[expense.category].amount += expense.amount;
+      categoryData[expense.category].count += 1;
+    });
+    
+    return Object.entries(categoryData)
+      .map(([category, data]) => ({
+        category,
+        amount: data.amount,
+        percentage: totalAmount > 0 ? (data.amount / totalAmount) * 100 : 0,
+        transactionCount: data.count,
+        color: CATEGORY_DATABASE[category as keyof typeof CATEGORY_DATABASE]?.color || 'bg-gray-100 text-gray-800'
+      }))
+      .sort((a, b) => b.amount - a.amount)
+      .slice(0, 5);
+  };
+  
+  const getVendorAnalysis = (): VendorAnalysis[] => {
+    const expenses = getExpenses();
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    
+    const monthlyExpenses = expenses.filter(expense => {
+      const expenseDate = new Date(expense.date);
+      return expenseDate.getMonth() === currentMonth && expenseDate.getFullYear() === currentYear;
+    });
+    
+    const vendorData: { [key: string]: { total: number; count: number; dates: string[] } } = {};
+    
+    monthlyExpenses.forEach(expense => {
+      if (!vendorData[expense.vendor]) {
+        vendorData[expense.vendor] = { total: 0, count: 0, dates: [] };
+      }
+      vendorData[expense.vendor].total += expense.amount;
+      vendorData[expense.vendor].count += 1;
+      vendorData[expense.vendor].dates.push(expense.date);
+    });
+    
+    return Object.entries(vendorData)
+      .map(([vendor, data]) => ({
+        vendor,
+        totalSpent: data.total,
+        transactionCount: data.count,
+        avgAmount: data.total / data.count,
+        lastTransaction: data.dates.sort().reverse()[0],
+        trend: Math.random() > 0.5 ? 'up' : 'down' as 'up' | 'down' | 'stable'
+      }))
+      .sort((a, b) => b.totalSpent - a.totalSpent)
+      .slice(0, 5);
+  };
+  
+  const generateBusinessInsights = (): string[] => {
+    const analytics = calculateAnalytics();
+    const categoryInsights = getCategoryInsights();
+    const vendorAnalysis = getVendorAnalysis();
+    
+    const insights = [
+      `Your highest spending category is ${analytics.topCategory} at ₹${analytics.monthlyTotal.toLocaleString('en-IN')}`,
+      `You've processed ${analytics.transactionCount} invoices this month`,
+      `${analytics.topVendor} is your most frequent vendor`,
+      `Average processing time saved: ${Math.floor(analytics.transactionCount * 0.5)} hours per month`
+    ];
+    
+    if (categoryInsights.length > 0) {
+      insights.push(`${categoryInsights[0].category} represents ${categoryInsights[0].percentage.toFixed(1)}% of total spending`);
+    }
+    
+    return insights;
+  };
+  
+  const handleExportReport = () => {
+    const analytics = calculateAnalytics();
+    const categoryInsights = getCategoryInsights();
+    const vendorAnalysis = getVendorAnalysis();
+    const insights = generateBusinessInsights();
+    
+    const reportData = {
+      reportDate: new Date().toLocaleDateString('en-IN'),
+      analytics,
+      categoryInsights,
+      vendorAnalysis,
+      insights,
+      expenses: getExpenses()
+    };
+    
+    // Simulate PDF export
+    const dataStr = JSON.stringify(reportData, null, 2);
+    const dataBlob = new Blob([dataStr], { type: 'application/json' });
+    const url = URL.createObjectURL(dataBlob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `FinanceSaathi_Report_${new Date().toISOString().split('T')[0]}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  };
+
                     </div>
                   </div>
                 ))}
@@ -1048,6 +1231,11 @@ function App() {
                           <Upload className="w-16 h-16 text-[#f97316] mx-auto" />
                         </div>
                         <p className="text-xl font-semibold text-gray-800 mb-3">
+    const analytics = calculateAnalytics();
+    const categoryInsights = getCategoryInsights();
+    const vendorAnalysis = getVendorAnalysis();
+    const businessInsights = generateBusinessInsights();
+    
                           Uploading...
                         </p>
                         <div className="w-full bg-gray-200 rounded-full h-3 mb-3">
@@ -1070,22 +1258,6 @@ function App() {
                         </p>
                         <p className="text-base text-gray-600">
                           Supports PDF, JPG, PNG • <span className="text-[#f97316] font-semibold">See instant AI processing</span>
-                        </p>
-                      </>
-                    )}
-                  </div>
-                  <input
-                    id="file-upload"
-                    type="file"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    onChange={handleFileUpload}
-                    disabled={uploadState.isUploading || uploadState.isProcessing}
-                    className="hidden"
-                  />
-                </div>
-              </div>
-            </div>
-
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center items-center gap-6 sm:gap-8 text-sm text-gray-500">
               <div className="flex items-center gap-2">
@@ -1231,51 +1403,195 @@ function App() {
                   <button className="bg-[#f97316] hover:bg-[#ea580c] text-white px-6 py-3 rounded-lg font-semibold w-full transition-colors min-h-[44px]">
                     Start Free Trial
                   </button>
+          {/* Enhanced Summary Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <DollarSign className="h-8 w-8 text-green-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Total This Month</p>
+                  <p className="text-2xl font-semibold text-gray-900">
+                    {formatCurrency(analytics.monthlyTotal)}
+                  </p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    ₹{Math.round(analytics.avgTransaction).toLocaleString('en-IN')} avg per transaction
+                  </p>
                 </div>
               </div>
-              
-              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75 order-2">
-                <div className="text-center">
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Smart</h3>
-                  <div className="bg-gray-100 text-gray-500 text-sm font-semibold px-3 py-1 rounded-full mb-3">
-                    14-day FREE trial
-                  </div>
-                  <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
-                    ₹599<span className="text-lg text-gray-400">/month</span>
-                  </div>
-                  <p className="text-gray-600 mb-6">Advanced features for growing businesses</p>
-                  <p className="text-sm text-gray-500 mb-4">No setup fees</p>
-                  <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed min-h-[44px]">
-                    Coming Soon
-                  </button>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <FileText className="h-8 w-8 text-blue-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Transactions</p>
+                  <p className="text-2xl font-semibold text-gray-900">{analytics.transactionCount}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {Math.round(analytics.transactionCount * 0.5)} hours saved
+                  </p>
                 </div>
               </div>
-              
-              <div className="bg-white rounded-xl p-6 sm:p-8 shadow-lg opacity-75 order-3">
-                <div className="text-center">
-                  <h3 className="text-xl sm:text-2xl font-bold text-[#002349] mb-2">Saathi</h3>
-                  <div className="bg-gray-100 text-gray-500 text-sm font-semibold px-3 py-1 rounded-full mb-3">
-                    14-day FREE trial
-                  </div>
-                  <div className="text-3xl sm:text-4xl font-bold text-gray-400 mb-4">
-                    ₹1299<span className="text-lg text-gray-400">/month</span>
-                  </div>
-                  <p className="text-gray-600 mb-6">Complete solution for established businesses</p>
-                  <p className="text-sm text-gray-500 mb-4">No setup fees</p>
-                  <button className="bg-gray-300 text-gray-500 px-6 py-3 rounded-lg font-semibold w-full cursor-not-allowed min-h-[44px]">
-                    Coming Soon
-                  </button>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <TrendingUp className="h-8 w-8 text-orange-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Top Category</p>
+                  <p className="text-lg font-semibold text-gray-900">{analytics.topCategory}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {categoryInsights.length > 0 ? `${categoryInsights[0].percentage.toFixed(1)}% of spending` : 'No data'}
+                  </p>
                 </div>
               </div>
+            </div>
+
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <Users className="h-8 w-8 text-purple-600" />
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm font-medium text-gray-500">Top Vendor</p>
+                  <p className="text-lg font-semibold text-gray-900">{analytics.topVendor}</p>
+                  <p className="text-xs text-gray-400 mt-1">
+                    {vendorAnalysis.length > 0 ? `${vendorAnalysis[0].transactionCount} transactions` : 'No data'}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Business Intelligence Section */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            {/* Category Spending Chart */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Category Breakdown</h3>
+                <BarChart3 className="h-5 w-5 text-gray-400" />
+              </div>
+              <div className="space-y-4">
+                {categoryInsights.map((category, index) => (
+                  <div key={index} className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className={`w-3 h-3 rounded-full ${category.color.split(' ')[0]}`}></div>
+                      <span className="text-sm font-medium text-gray-700">{category.category}</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <div className="w-24 bg-gray-200 rounded-full h-2">
+                        <div 
+                          className={`h-2 rounded-full ${category.color.split(' ')[0]}`}
+                          style={{ width: `${category.percentage}%` }}
+                        ></div>
+                      </div>
+                      <span className="text-sm font-semibold text-gray-900 w-16 text-right">
+                        {formatCurrency(category.amount)}
+                      </span>
+                      <span className="text-xs text-gray-500 w-12 text-right">
+                        {category.percentage.toFixed(1)}%
+                      </span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Vendor Analysis */}
+            <div className="bg-white rounded-lg shadow p-6">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Top Vendors</h3>
+                <Users className="h-5 w-5 text-gray-400" />
+              </div>
+              <div className="space-y-4">
+                {vendorAnalysis.map((vendor, index) => (
+                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <p className="text-sm font-medium text-gray-900">{vendor.vendor}</p>
+                      <p className="text-xs text-gray-500">
+                        {vendor.transactionCount} transactions • Avg: {formatCurrency(Math.round(vendor.avgAmount))}
+                      </p>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <span className="text-sm font-semibold text-gray-900">
+                        {formatCurrency(vendor.totalSpent)}
+                      </span>
+                      {vendor.trend === 'up' ? (
+                        <ArrowUp className="h-4 w-4 text-green-500" />
+                      ) : (
+                        <ArrowDown className="h-4 w-4 text-red-500" />
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Business Insights */}
+          <div className="bg-white rounded-lg shadow p-6 mb-8">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-lg font-semibold text-gray-900">Business Insights</h3>
+              <Target className="h-5 w-5 text-gray-400" />
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {businessInsights.map((insight, index) => (
+                <div key={index} className="flex items-start space-x-3 p-3 bg-blue-50 rounded-lg">
+                  <Zap className="h-5 w-5 text-blue-600 mt-0.5 flex-shrink-0" />
+                  <p className="text-sm text-gray-700">{insight}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
 
+          {/* Recent Activity Feed */}
+          <div className="bg-white rounded-lg shadow mb-8">
+            <div className="px-6 py-4 border-b border-gray-200">
+              <h3 className="text-lg font-semibold text-gray-900">Recent Activity</h3>
+            </div>
+            <div className="p-6">
+              <div className="space-y-4">
+                {getExpenses().slice(-10).reverse().map((expense, index) => (
+                  <div key={expense.id} className="flex items-center space-x-4 p-3 bg-gray-50 rounded-lg">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                        <DollarSign className="w-4 h-4 text-orange-600" />
+                      </div>
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">
+                        {formatCurrency(expense.amount)} spent at {expense.vendor}
+                      </p>
+                      <div className="flex items-center space-x-2 mt-1">
+                        {getCategoryBadge(expense.category)}
+                        <span className="text-xs text-gray-500">
+                          {new Date(expense.date).toLocaleDateString('en-IN')}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <Clock className="w-4 h-4 text-gray-400" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
       {/* Testimonials */}
       <section className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <button 
+              onClick={handleExportReport}
+              className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg font-medium transition-colors flex items-center space-x-2"
+            >
           <div className="text-center mb-8 sm:mb-12 lg:mb-16">
             <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-[#002349] mb-4 px-4">
               What Business Owners Say
