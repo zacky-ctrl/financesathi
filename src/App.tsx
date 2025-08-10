@@ -1037,14 +1037,15 @@ function App() {
         </div>
       </div>
 
-      {/* Dashboard Access Button */}
-      <div className="mt-4 text-center">
-        <button
-          onClick={() => setCurrentView('dashboard')}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-        >
-          Dashboard
-        </button>
+        {/* Dashboard Access Button */}
+        <div className="mt-4 text-center">
+          <button
+            onClick={() => setCurrentView('dashboard')}
+            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+          >
+            Dashboard
+          </button>
+        </div>
       </div>
     );
   }
