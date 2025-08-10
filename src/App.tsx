@@ -488,10 +488,8 @@ function App() {
       }
 
       // Fallback to Tesseract OCR
-      console.log('OCR starting...', { fileName: file.name, fileSize: file.size });
       const result = await Tesseract.recognize(file, 'eng+hin', {
         logger: (m) => {
-          console.log('OCR progress:', m);
           if (m.status === 'recognizing text') {
             setOcrProgress(Math.round(m.progress * 100));
           }
@@ -500,11 +498,6 @@ function App() {
 
       const extractedText = result.data.text;
       const confidence = result.data.confidence;
-      console.log('OCR completed', { 
-        textLength: result.data.text.length, 
-        confidence: result.data.confidence,
-        firstChars: result.data.text.substring(0, 100) + '...'
-      });
 
       // Convert file to base64
       const reader = new FileReader();
@@ -956,28 +949,6 @@ function App() {
                       <Eye className="w-3 h-3" />
                       View Details
                     </button>
-
-                    {/* Debug Section - Raw OCR Text */}
-                    {upload.extractedText && (
-                      <div className="mt-6 p-4 bg-gray-50 rounded-lg border">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-sm font-medium text-gray-700">Raw OCR Text:</h3>
-                          <button
-                            onClick={() => copyToClipboard(upload.extractedText || '', 'raw-text')}
-                            className="flex items-center gap-1 px-2 py-1 text-xs bg-gray-200 hover:bg-gray-300 rounded transition-colors"
-                          >
-                            {copiedField === 'raw-text' ? '✓ Copied' : 'Copy'}
-                          </button>
-                        </div>
-                        <div className="text-xs text-gray-600 mb-2">
-                          Extracted {upload.extractedText.length} characters
-                        </div>
-                        <div className="bg-white p-3 rounded border text-sm text-gray-800 font-mono max-h-32 overflow-y-auto">
-                          {upload.extractedText.substring(0, 200)}
-                          {upload.extractedText.length > 200 && '...'}
-                        </div>
-                      </div>
-                    )}
                   </div>
                 ))}
               </div>
