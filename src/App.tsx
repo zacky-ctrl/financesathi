@@ -58,7 +58,6 @@ function App() {
   const [searchTerm, setSearchTerm] = React.useState('');
   const [selectedCategory, setSelectedCategory] = React.useState('All');
   const [ocrProgress, setOcrProgress] = React.useState(0);
-  const [copiedField, setCopiedField] = React.useState<string | null>(null);
   const [uploadState, setUploadState] = React.useState<UploadState>({
     isDragging: false,
     isUploading: false,
@@ -183,51 +182,6 @@ function App() {
   const getRandomPaymentMethod = () => {
     const methods = ['UPI', 'Credit Card', 'Bank Transfer', 'Cash', 'Auto Debit'];
     return methods[Math.floor(Math.random() * methods.length)];
-  };
-
-  // Copy to clipboard function
-  const copyToClipboard = async (text: string, field: string) => {
-    try {
-      await navigator.clipboard.writeText(text);
-      setCopiedField(field);
-      setTimeout(() => setCopiedField(null), 2000);
-    } catch (err) {
-      console.error('Failed to copy text: ', err);
-    }
-  };
-
-  // Parse OCR text to extract key information
-  const parseOCRText = (text: string) => {
-    const lines = text.split('\n').filter(line => line.trim());
-    
-    // Extract vendor (usually first meaningful line)
-    const vendor = lines.find(line => 
-      line.length > 3 && 
-      !line.match(/^\d+/) && 
-      !line.includes('₹') &&
-      !line.match(/\d{2}[\/\-]\d{2}[\/\-]\d{2,4}/)
-    ) || 'Not found';
-
-    // Extract amounts with ₹ symbol
-    const amountMatches = text.match(/₹\s*[\d,]+\.?\d*/g);
-    const amounts = amountMatches ? amountMatches.map(match => match.trim()) : [];
-    const mainAmount = amounts.length > 0 ? amounts[amounts.length - 1] : 'Not found';
-
-    // Extract dates (DD/MM/YYYY, DD-MM-YY formats)
-    const dateMatches = text.match(/\d{1,2}[\/\-]\d{1,2}[\/\-]\d{2,4}/g);
-    const extractedDate = dateMatches ? dateMatches[0] : 'Not found';
-
-    // Extract invoice/bill numbers
-    const invoiceMatches = text.match(/(invoice|bill|receipt)[\s#:]*([a-zA-Z0-9\-\/]+)/gi);
-    const invoiceNumber = invoiceMatches ? invoiceMatches[0] : 'Not found';
-
-    return {
-      vendor: vendor.substring(0, 50), // Limit length
-      amount: mainAmount,
-      date: extractedDate,
-      invoice: invoiceNumber,
-      allAmounts: amounts
-    };
   };
 
   // File to Base64 conversion
