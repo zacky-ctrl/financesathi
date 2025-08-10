@@ -1037,49 +1037,19 @@ function App() {
         </div>
       </div>
 
-        {/* Dashboard Access Button */}
-        <div className="mt-4 text-center">
-          <button
-            onClick={() => setCurrentView('dashboard')}
-            className="bg-orange-600 hover:bg-orange-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
-          >
-            Dashboard
-          </button>
-        </div>
+      {/* Dashboard Access Button */}
+      <div className="mt-4 text-center">
+        <button
+          onClick={() => setCurrentView('dashboard')}
+          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+        >
+          Dashboard
+        </button>
       </div>
     );
   }
 
   return (
-    <>
-      {/* Navigation */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-3">
-          <div className="flex gap-4">
-            <button
-              onClick={() => setCurrentView('upload')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                currentView === 'upload'
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Upload
-            </button>
-            <button
-              onClick={() => setCurrentView('dashboard')}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                currentView === 'dashboard'
-                  ? 'bg-orange-500 text-white'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-              }`}
-            >
-              Dashboard
-            </button>
-          </div>
-        </div>
-      </div>
-
     <div className="min-h-screen bg-white">
       {/* Navigation */}
       <nav className="bg-white shadow-sm border-b border-gray-100">
@@ -1550,7 +1520,6 @@ function App() {
         </div>
       </footer>
     </div>
-    </>
   );
 }
 
