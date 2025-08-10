@@ -16,14 +16,76 @@ import {
   Star,
   Shield,
   Zap,
-  Heart
+  Heart,
+  Phone,
+  Mail,
+  MapPin,
+  Send,
+  CheckCircle,
+  Award,
+  Globe,
+  Clock,
+  Building,
+  Lightbulb
 } from 'lucide-react';
 
 function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSignupModalOpen, setIsSignupModalOpen] = useState(false);
+  const [isDemoModalOpen, setIsDemoModalOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    message: ''
+  });
+  const [signupForm, setSignupForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    businessType: ''
+  });
+  const [demoForm, setDemoForm] = useState({
+    name: '',
+    email: '',
+    company: '',
+    phone: '',
+    preferredDate: '',
+    preferredTime: ''
+  });
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Thank you for contacting us! We will get back to you within 24 hours.');
+    setContactForm({ name: '', email: '', company: '', phone: '', message: '' });
+  };
+
+  const handleSignupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Welcome to FinanceSaathi! Your free trial account has been created. Check your email for login details.');
+    setSignupForm({ name: '', email: '', company: '', phone: '', businessType: '' });
+    setIsSignupModalOpen(false);
+  };
+
+  const handleDemoSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert('Demo scheduled successfully! We will send you a calendar invite and join details shortly.');
+    setDemoForm({ name: '', email: '', company: '', phone: '', preferredDate: '', preferredTime: '' });
+    setIsDemoModalOpen(false);
+  };
+
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      setIsMobileMenuOpen(false);
+    }
   };
 
   return (
@@ -32,7 +94,7 @@ function App() {
       <nav className="bg-white/80 backdrop-blur-md shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
+            <div className="flex items-center cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
               <Calculator className="h-8 w-8 text-blue-600" />
               <span className="ml-2 text-xl font-bold text-gray-900">FinanceSaathi</span>
             </div>
@@ -40,11 +102,11 @@ function App() {
             {/* Desktop Navigation */}
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
-                <a href="#features" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</a>
-                <a href="#services" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Services</a>
-                <a href="#about" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</a>
-                <a href="#contact" className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</a>
-                <button className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
+                <button onClick={() => scrollToSection('features')} className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</button>
+                <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</button>
+                <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">About</button>
+                <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium transition-colors">Contact</button>
+                <button onClick={() => setIsSignupModalOpen(true)} className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors">
                   Get Started
                 </button>
               </div>
@@ -66,11 +128,11 @@ function App() {
         {isMobileMenuOpen && (
           <div className="md:hidden bg-white border-t">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-              <a href="#features" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Features</a>
-              <a href="#services" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Services</a>
-              <a href="#about" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">About</a>
-              <a href="#contact" className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium">Contact</a>
-              <button className="w-full text-left bg-blue-600 text-white px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700 transition-colors">
+              <button onClick={() => scrollToSection('features')} className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Features</button>
+              <button onClick={() => scrollToSection('services')} className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Pricing</button>
+              <button onClick={() => scrollToSection('about')} className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left">About</button>
+              <button onClick={() => scrollToSection('contact')} className="text-gray-700 hover:text-blue-600 block px-3 py-2 rounded-md text-base font-medium w-full text-left">Contact</button>
+              <button onClick={() => setIsSignupModalOpen(true)} className="w-full text-left bg-blue-600 text-white px-3 py-2 rounded-md text-base font-medium hover:bg-blue-700 transition-colors">
                 Get Started
               </button>
             </div>
@@ -93,10 +155,16 @@ function App() {
               and smart financial planning tools designed for Indian businesses.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg">
+              <button 
+                onClick={() => setIsSignupModalOpen(true)}
+                className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition-all transform hover:scale-105 shadow-lg"
+              >
                 Start Free Trial
               </button>
-              <button className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all">
+              <button 
+                onClick={() => setIsDemoModalOpen(true)}
+                className="border-2 border-blue-600 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-50 transition-all"
+              >
                 Watch Demo
               </button>
             </div>
@@ -130,9 +198,12 @@ function App() {
                 <TrendingUp className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Financial Analytics</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Get deep insights into your business performance with advanced analytics and reporting tools.
               </p>
+              <button className="text-blue-600 font-medium hover:text-blue-800 transition-colors">
+                Learn More →
+              </button>
             </div>
 
             <div className="bg-gradient-to-br from-green-50 to-green-100 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
@@ -140,9 +211,12 @@ function App() {
                 <PieChart className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Budget Planning</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Create and manage budgets with intelligent forecasting and expense tracking capabilities.
               </p>
+              <button className="text-green-600 font-medium hover:text-green-800 transition-colors">
+                Learn More →
+              </button>
             </div>
 
             <div className="bg-gradient-to-br from-purple-50 to-purple-100 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
@@ -150,9 +224,12 @@ function App() {
                 <FileText className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Invoice Management</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Create, send, and track invoices with automated payment reminders and GST compliance.
               </p>
+              <button className="text-purple-600 font-medium hover:text-purple-800 transition-colors">
+                Learn More →
+              </button>
             </div>
 
             <div className="bg-gradient-to-br from-orange-50 to-orange-100 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
@@ -160,9 +237,12 @@ function App() {
                 <Users className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Team Collaboration</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Work together with your team with role-based access and real-time collaboration features.
               </p>
+              <button className="text-orange-600 font-medium hover:text-orange-800 transition-colors">
+                Learn More →
+              </button>
             </div>
 
             <div className="bg-gradient-to-br from-red-50 to-red-100 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
@@ -170,9 +250,12 @@ function App() {
                 <CreditCard className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Payment Processing</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Accept payments online with integrated payment gateways and automated reconciliation.
               </p>
+              <button className="text-red-600 font-medium hover:text-red-800 transition-colors">
+                Learn More →
+              </button>
             </div>
 
             <div className="bg-gradient-to-br from-indigo-50 to-indigo-100 p-6 rounded-xl shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-2">
@@ -180,9 +263,12 @@ function App() {
                 <BarChart3 className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Tax Compliance</h3>
-              <p className="text-gray-600">
+              <p className="text-gray-600 mb-4">
                 Stay compliant with Indian tax regulations with automated GST filing and TDS management.
               </p>
+              <button className="text-indigo-600 font-medium hover:text-indigo-800 transition-colors">
+                Learn More →
+              </button>
             </div>
           </div>
         </div>
@@ -214,7 +300,7 @@ function App() {
             
             <div className="p-8">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                <div className="bg-blue-50 p-4 rounded-lg">
+                <div className="bg-blue-50 p-4 rounded-lg cursor-pointer hover:bg-blue-100 transition-colors">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-blue-600 text-sm font-medium">Total Revenue</p>
@@ -224,7 +310,7 @@ function App() {
                   </div>
                 </div>
                 
-                <div className="bg-green-50 p-4 rounded-lg">
+                <div className="bg-green-50 p-4 rounded-lg cursor-pointer hover:bg-green-100 transition-colors">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-600 text-sm font-medium">Profit Margin</p>
@@ -234,7 +320,7 @@ function App() {
                   </div>
                 </div>
                 
-                <div className="bg-purple-50 p-4 rounded-lg">
+                <div className="bg-purple-50 p-4 rounded-lg cursor-pointer hover:bg-purple-100 transition-colors">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-purple-600 text-sm font-medium">Active Projects</p>
@@ -244,7 +330,7 @@ function App() {
                   </div>
                 </div>
                 
-                <div className="bg-orange-50 p-4 rounded-lg">
+                <div className="bg-orange-50 p-4 rounded-lg cursor-pointer hover:bg-orange-100 transition-colors">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-orange-600 text-sm font-medium">Pending Invoices</p>
@@ -259,21 +345,21 @@ function App() {
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h4 className="text-lg font-semibold text-gray-900 mb-4">Recent Transactions</h4>
                   <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between cursor-pointer hover:bg-gray-100 p-2 rounded">
                       <div className="flex items-center">
                         <div className="w-2 h-2 bg-green-500 rounded-full mr-3"></div>
                         <span className="text-gray-700">Payment Received</span>
                       </div>
                       <span className="text-green-600 font-medium">+₹25,000</span>
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between cursor-pointer hover:bg-gray-100 p-2 rounded">
                       <div className="flex items-center">
                         <div className="w-2 h-2 bg-red-500 rounded-full mr-3"></div>
                         <span className="text-gray-700">Office Rent</span>
                       </div>
                       <span className="text-red-600 font-medium">-₹15,000</span>
                     </div>
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between cursor-pointer hover:bg-gray-100 p-2 rounded">
                       <div className="flex items-center">
                         <div className="w-2 h-2 bg-blue-500 rounded-full mr-3"></div>
                         <span className="text-gray-700">Software Subscription</span>
@@ -311,7 +397,7 @@ function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              Comprehensive Business Solutions
+              Choose Your Plan
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
               From startups to enterprises, we provide tailored financial solutions for every business size.
@@ -321,27 +407,36 @@ function App() {
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="bg-gradient-to-br from-blue-600 to-blue-700 text-white p-8 rounded-2xl shadow-xl">
               <Briefcase className="h-12 w-12 mb-6" />
-              <h3 className="text-2xl font-bold mb-4">For Startups</h3>
+              <h3 className="text-2xl font-bold mb-2">Starter Plan</h3>
+              <p className="text-3xl font-bold mb-2">₹999<span className="text-lg font-normal">/month</span></p>
+              <p className="text-blue-100 mb-6">Perfect for startups and small businesses</p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Basic accounting setup
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
-                  Invoice management
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Invoice management (up to 50/month)
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Expense tracking
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Basic reporting
                 </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Email support
+                </li>
               </ul>
-              <button className="bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Start Free
+              <button 
+                onClick={() => setIsSignupModalOpen(true)}
+                className="w-full bg-white text-blue-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Start Free Trial
               </button>
             </div>
 
@@ -350,52 +445,86 @@ function App() {
                 <Users className="h-12 w-12" />
                 <span className="bg-yellow-400 text-green-800 px-3 py-1 rounded-full text-sm font-bold">Popular</span>
               </div>
-              <h3 className="text-2xl font-bold mb-4">For Growing Business</h3>
+              <h3 className="text-2xl font-bold mb-2">Growth Plan</h3>
+              <p className="text-3xl font-bold mb-2">₹2,499<span className="text-lg font-normal">/month</span></p>
+              <p className="text-green-100 mb-6">Ideal for growing businesses</p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Everything in Starter
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Unlimited invoices
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Advanced analytics
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
-                  Multi-user access
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Multi-user access (up to 5)
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Inventory management
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   API integrations
                 </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Priority support
+                </li>
               </ul>
-              <button className="bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
-                Try Premium
+              <button 
+                onClick={() => setIsSignupModalOpen(true)}
+                className="w-full bg-white text-green-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
+                Start Free Trial
               </button>
             </div>
 
             <div className="bg-gradient-to-br from-purple-600 to-purple-700 text-white p-8 rounded-2xl shadow-xl">
               <Target className="h-12 w-12 mb-6" />
-              <h3 className="text-2xl font-bold mb-4">For Enterprises</h3>
+              <h3 className="text-2xl font-bold mb-2">Enterprise Plan</h3>
+              <p className="text-3xl font-bold mb-2">Custom Pricing</p>
+              <p className="text-purple-100 mb-6">For large organizations</p>
               <ul className="space-y-3 mb-6">
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Everything in Growth
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Unlimited users
+                </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Custom workflows
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Advanced security
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Dedicated support
                 </li>
                 <li className="flex items-center">
-                  <ChevronRight className="h-4 w-4 mr-2" />
+                  <CheckCircle className="h-4 w-4 mr-2" />
                   Custom integrations
                 </li>
+                <li className="flex items-center">
+                  <CheckCircle className="h-4 w-4 mr-2" />
+                  Onboarding assistance
+                </li>
               </ul>
-              <button className="bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="w-full bg-white text-purple-600 px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              >
                 Contact Sales
               </button>
             </div>
@@ -416,14 +545,14 @@ function App() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-6 rounded-xl shadow-lg">
+            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                 ))}
               </div>
               <p className="text-gray-600 mb-4">
-                "FinanceSaathi has transformed how we manage our business finances. The insights are incredible!"
+                "FinanceSaathi has transformed how we manage our business finances. The insights are incredible and the automated GST filing saves us hours every month!"
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -436,14 +565,14 @@ function App() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg">
+            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                 ))}
               </div>
               <p className="text-gray-600 mb-4">
-                "The automated invoicing and GST compliance features have saved us countless hours every month."
+                "The automated invoicing and payment tracking features have revolutionized our billing process. We've reduced payment delays by 60%!"
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -456,14 +585,14 @@ function App() {
               </div>
             </div>
 
-            <div className="bg-white p-6 rounded-xl shadow-lg">
+            <div className="bg-white p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow">
               <div className="flex items-center mb-4">
                 {[...Array(5)].map((_, i) => (
                   <Star key={i} className="h-5 w-5 text-yellow-400 fill-current" />
                 ))}
               </div>
               <p className="text-gray-600 mb-4">
-                "Excellent customer support and the dashboard gives us real-time insights into our business performance."
+                "Excellent customer support and the dashboard gives us real-time insights into our business performance. Highly recommended!"
               </p>
               <div className="flex items-center">
                 <div className="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold">
@@ -479,8 +608,103 @@ function App() {
         </div>
       </section>
 
+      {/* About Section */}
+      <section id="about" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              About FinanceSaathi
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              We're on a mission to simplify business finance management for every Indian entrepreneur.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-4">Our Story</h3>
+              <p className="text-gray-600 mb-4">
+                Founded in 2020 by a team of finance professionals and tech experts, FinanceSaathi was born out of 
+                the frustration of managing business finances with outdated tools and complex processes.
+              </p>
+              <p className="text-gray-600 mb-4">
+                We recognized that Indian businesses needed a solution that understood local regulations, 
+                GST compliance, and the unique challenges of the Indian market.
+              </p>
+              <p className="text-gray-600">
+                Today, we serve over 10,000+ businesses across India, from startups to large enterprises, 
+                helping them streamline their financial operations and make data-driven decisions.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-6">
+              <div className="text-center">
+                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Users className="h-8 w-8 text-blue-600" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-900">10,000+</h4>
+                <p className="text-gray-600">Active Users</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Building className="h-8 w-8 text-green-600" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-900">500+</h4>
+                <p className="text-gray-600">Cities Covered</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <DollarSign className="h-8 w-8 text-purple-600" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-900">₹100Cr+</h4>
+                <p className="text-gray-600">Transactions Processed</p>
+              </div>
+              <div className="text-center">
+                <div className="bg-orange-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Award className="h-8 w-8 text-orange-600" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-900">4.8/5</h4>
+                <p className="text-gray-600">Customer Rating</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="text-center mb-16">
+            <h3 className="text-2xl font-bold text-gray-900 mb-8">Our Values</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="text-center">
+                <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Lightbulb className="h-8 w-8 text-blue-600" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Innovation</h4>
+                <p className="text-gray-600">
+                  Continuously improving our platform with cutting-edge technology and user feedback.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Shield className="h-8 w-8 text-green-600" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Trust</h4>
+                <p className="text-gray-600">
+                  Your financial data is secure with us. We maintain the highest standards of security and privacy.
+                </p>
+              </div>
+              <div className="text-center">
+                <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Heart className="h-8 w-8 text-purple-600" />
+                </div>
+                <h4 className="text-xl font-semibold text-gray-900 mb-2">Customer First</h4>
+                <p className="text-gray-600">
+                  Every feature we build is designed with our customers' success and satisfaction in mind.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Why Choose Us */}
-      <section className="py-20 bg-white">
+      <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
@@ -491,7 +715,7 @@ function App() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="text-center">
               <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Shield className="h-8 w-8 text-blue-600" />
@@ -514,12 +738,186 @@ function App() {
 
             <div className="text-center">
               <div className="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Heart className="h-8 w-8 text-red-600" />
+                <Globe className="h-8 w-8 text-red-600" />
               </div>
               <h3 className="text-xl font-semibold text-gray-900 mb-2">Made for India</h3>
               <p className="text-gray-600">
                 Built specifically for Indian businesses with GST compliance and local payment methods.
               </p>
+            </div>
+
+            <div className="text-center">
+              <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Clock className="h-8 w-8 text-purple-600" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">24/7 Support</h3>
+              <p className="text-gray-600">
+                Get help whenever you need it with our round-the-clock customer support team.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact Section */}
+      <section id="contact" className="py-20 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+              Get in Touch
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              Have questions? We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            <div>
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Contact Information</h3>
+              
+              <div className="space-y-6">
+                <div className="flex items-start">
+                  <div className="bg-blue-100 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                    <Phone className="h-6 w-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900">Phone</h4>
+                    <p className="text-gray-600">+91 80-4567-8901</p>
+                    <p className="text-sm text-gray-500">Mon-Fri from 8am to 6pm IST</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <div className="bg-green-100 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                    <Mail className="h-6 w-6 text-green-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900">Email</h4>
+                    <p className="text-gray-600">support@financesaathi.com</p>
+                    <p className="text-sm text-gray-500">We'll respond within 24 hours</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start">
+                  <div className="bg-purple-100 w-12 h-12 rounded-lg flex items-center justify-center mr-4">
+                    <MapPin className="h-6 w-6 text-purple-600" />
+                  </div>
+                  <div>
+                    <h4 className="text-lg font-semibold text-gray-900">Office</h4>
+                    <p className="text-gray-600">
+                      Koramangala, Bangalore<br />
+                      Karnataka, India 560034
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-8">
+                <h4 className="text-lg font-semibold text-gray-900 mb-4">Quick Links</h4>
+                <div className="space-y-2">
+                  <a href="#" className="block text-blue-600 hover:text-blue-800 transition-colors">
+                    → Help Center & Documentation
+                  </a>
+                  <a href="#" className="block text-blue-600 hover:text-blue-800 transition-colors">
+                    → Schedule a Live Demo
+                  </a>
+                  <a href="#" className="block text-blue-600 hover:text-blue-800 transition-colors">
+                    → API Documentation
+                  </a>
+                  <a href="#" className="block text-blue-600 hover:text-blue-800 transition-colors">
+                    → System Status
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-gray-50 p-8 rounded-xl">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Send us a Message</h3>
+              
+              <form onSubmit={handleContactSubmit} className="space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
+                      Full Name *
+                    </label>
+                    <input
+                      type="text"
+                      id="name"
+                      required
+                      value={contactForm.name}
+                      onChange={(e) => setContactForm({...contactForm, name: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Enter your full name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+                      Email Address *
+                    </label>
+                    <input
+                      type="email"
+                      id="email"
+                      required
+                      value={contactForm.email}
+                      onChange={(e) => setContactForm({...contactForm, email: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Enter your email"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label htmlFor="company" className="block text-sm font-medium text-gray-700 mb-2">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      id="company"
+                      value={contactForm.company}
+                      onChange={(e) => setContactForm({...contactForm, company: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="Enter your company name"
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+                      Phone Number
+                    </label>
+                    <input
+                      type="tel"
+                      id="phone"
+                      value={contactForm.phone}
+                      onChange={(e) => setContactForm({...contactForm, phone: e.target.value})}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      placeholder="+91 XXXXX XXXXX"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+                    Message *
+                  </label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={5}
+                    value={contactForm.message}
+                    onChange={(e) => setContactForm({...contactForm, message: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                    placeholder="Tell us how we can help you..."
+                  ></textarea>
+                </div>
+
+                <button
+                  type="submit"
+                  className="w-full bg-blue-600 text-white px-8 py-4 rounded-lg font-semibold hover:bg-blue-700 transition-colors flex items-center justify-center"
+                >
+                  <Send className="h-5 w-5 mr-2" />
+                  Send Message
+                </button>
+              </form>
             </div>
           </div>
         </div>
@@ -535,10 +933,16 @@ function App() {
             Join thousands of businesses already using FinanceSaathi to streamline their financial operations.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg">
+            <button 
+              onClick={() => setIsSignupModalOpen(true)}
+              className="bg-white text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold hover:bg-gray-100 transition-all transform hover:scale-105 shadow-lg"
+            >
               Start Your Free Trial
             </button>
-            <button className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all">
+            <button 
+              onClick={() => setIsDemoModalOpen(true)}
+              className="border-2 border-white text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-white hover:text-blue-600 transition-all"
+            >
               Schedule a Demo
             </button>
           </div>
@@ -576,20 +980,22 @@ function App() {
             <div>
               <h3 className="text-lg font-semibold mb-4">Product</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
+                <li><a href="#services" className="hover:text-white transition-colors">Pricing</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Integrations</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">API</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Mobile App</a></li>
               </ul>
             </div>
 
             <div>
               <h3 className="text-lg font-semibold mb-4">Company</h3>
               <ul className="space-y-2 text-gray-400">
-                <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
+                <li><a href="#about" className="hover:text-white transition-colors">About Us</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#contact" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Press Kit</a></li>
               </ul>
             </div>
 
@@ -598,6 +1004,7 @@ function App() {
               <ul className="space-y-2 text-gray-400">
                 <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
               </ul>
@@ -609,6 +1016,206 @@ function App() {
           </div>
         </div>
       </footer>
+
+      {/* Signup Modal */}
+      {isSignupModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-md w-full p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-gray-900">Start Your Free Trial</h3>
+              <button 
+                onClick={() => setIsSignupModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleSignupSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={signupForm.name}
+                  onChange={(e) => setSignupForm({...signupForm, name: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={signupForm.email}
+                  onChange={(e) => setSignupForm({...signupForm, email: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your email"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Company Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={signupForm.company}
+                  onChange={(e) => setSignupForm({...signupForm, company: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your company name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                <input
+                  type="tel"
+                  required
+                  value={signupForm.phone}
+                  onChange={(e) => setSignupForm({...signupForm, phone: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="+91 XXXXX XXXXX"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Business Type *</label>
+                <select
+                  required
+                  value={signupForm.businessType}
+                  onChange={(e) => setSignupForm({...signupForm, businessType: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="">Select business type</option>
+                  <option value="startup">Startup</option>
+                  <option value="small_business">Small Business</option>
+                  <option value="medium_business">Medium Business</option>
+                  <option value="enterprise">Enterprise</option>
+                  <option value="freelancer">Freelancer</option>
+                  <option value="consultant">Consultant</option>
+                </select>
+              </div>
+              
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Create Free Account
+              </button>
+            </form>
+            
+            <p className="text-xs text-gray-500 text-center mt-4">
+              By signing up, you agree to our Terms of Service and Privacy Policy
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Demo Modal */}
+      {isDemoModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl max-w-md w-full p-8">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-2xl font-bold text-gray-900">Schedule a Demo</h3>
+              <button 
+                onClick={() => setIsDemoModalOpen(false)}
+                className="text-gray-400 hover:text-gray-600"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleDemoSubmit} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Full Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={demoForm.name}
+                  onChange={(e) => setDemoForm({...demoForm, name: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your full name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Email Address *</label>
+                <input
+                  type="email"
+                  required
+                  value={demoForm.email}
+                  onChange={(e) => setDemoForm({...demoForm, email: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your email"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Company Name *</label>
+                <input
+                  type="text"
+                  required
+                  value={demoForm.company}
+                  onChange={(e) => setDemoForm({...demoForm, company: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter your company name"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">Phone Number *</label>
+                <input
+                  type="tel"
+                  required
+                  value={demoForm.phone}
+                  onChange={(e) => setDemoForm({...demoForm, phone: e.target.value})}
+                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="+91 XXXXX XXXXX"
+                />
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Date *</label>
+                  <input
+                    type="date"
+                    required
+                    value={demoForm.preferredDate}
+                    onChange={(e) => setDemoForm({...demoForm, preferredDate: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Preferred Time *</label>
+                  <select
+                    required
+                    value={demoForm.preferredTime}
+                    onChange={(e) => setDemoForm({...demoForm, preferredTime: e.target.value})}
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  >
+                    <option value="">Select time</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="4:00 PM">4:00 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
+                  </select>
+                </div>
+              </div>
+              
+              <button
+                type="submit"
+                className="w-full bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors"
+              >
+                Schedule Demo
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
